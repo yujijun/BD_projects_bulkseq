@@ -1,0 +1,487 @@
+---
+title: "BDV_RNAseq"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(DESeq2)
+library(data.table)
+library(tidyverse)
+library("ggplot2")
+library(pheatmap)
+options(stringsAsFactors = F)
+setwd('~/Dropbox (Partners HealthCare)/BDV/')
+library(ggpubr)
+```
+
+
+1.merge and annotate
+
+```{r}
+source('~/Dropbox (Partners HealthCare)/PI3K_project/PI3K_function.R')
+expr.dat = getExpr(dirs = './BDV_RNAseq/rsem//',column = 'TPM')
+annot_file = read.csv('~/Dropbox (Partners HealthCare)/RNAseq_pipeline/RNAseq_Jing/Gencode.v27.annotation.genes.csv')
+expr.data.annot.tpm = merge(annot_file[,c('gene_name','gene_id')],
+                        expr.dat,by.x='gene_id',by.y=0)
+expr.data.annot.tpm = expr.data.annot.tpm[,-1]
+expr.data.annot.tpm <- aggregate(.~ gene_name,expr.data.annot.tpm,mean)
+writeDF(expr.data.annot.tpm,
+        './BDV_RNAseq/BDV_TPM.expression')
+#change to expected_count
+#run again
+expr.dat.count = getExpr(dirs = './BDV_RNAseq/rsem/',column ='expected_count')
+expr.data.annot = merge(annot_file[,c('gene_name','gene_id')],
+                        expr.dat.count,by.x='gene_id',by.y=0)
+expr.data.annot = expr.data.annot[,-1]
+expr.data.annot <- aggregate(.~ gene_name,expr.data.annot,mean)
+writeDF(expr.data.annot,'./BDV_RNAseq/BDV_count.expression')
+
+```
+
+2.DE gene analysis
+
+1)loading the count data and sample info
+
+```{r}
+expr.data.annot=read.delim('./BDV_count.expression',row.names = 1)
+
+#sample.info = data.frame(sample = cibersort.bdv$Input.Sample)
+sample.info = data.frame(sample = colnames(expr.data.annot))
+sample.info <- sample.info %>% 
+              mutate(patient =  str_remove(sample,pattern = '\\d+')) %>% 
+              mutate(group =  case_when(patient=='HC' ~ 'HC',
+                                        TRUE ~ 'BD')) %>%
+             column_to_rownames(var = 'sample')
+              
+#columns of the count matrix and the rows of the column data (information about samples) are in the same order
+
+all(rownames(sample.info)== colnames(expr.data.annot))
+dds <- DESeqDataSetFromMatrix(countData =round(as.matrix(expr.data.annot)),
+                              colData = sample.info,
+                              design = ~ group)
+
+dds <- dds[rowSums(counts(dds)) >= 10,]
+dds$group <- relevel(dds$group, ref = "HC")
+dds<-estimateSizeFactors(dds)
+```
+
+
+
+```{r}
+#DEgene identification
+#try BDU+BDV
+dds <- DESeq(dds,parallel = T)
+resultsNames(dds)
+res <- results(dds, name="group_BD_vs_HC")
+plotMA(res)
+summary(res)
+
+#contr+shift+c
+# res2 <- results(dds, name="patient_BDU_vs_HC")
+# plotMA(res2)
+# summary(res2)
+
+degene=as.data.frame(res)
+degene= degene[order(degene$padj),]
+write.csv(degene,file = './BDV_DEgene_BDvsHC.csv')
+
+#pull out a set of empirical control genes by looking at the genes that do not have a small p-value.
+```
+
+```{r}
+vsd <- vst(dds, blind = FALSE)
+sampleDists <- dist(t(assay(vsd)))
+sampleDists
+
+library("RColorBrewer")
+sampleDistMatrix <- as.matrix( sampleDists )
+#rownames(sampleDistMatrix) <- vsd$patient
+colnames(sampleDistMatrix) <- NULL
+colors <- colorRampPalette( rev(brewer.pal(9, "Blues")) )(255)
+pheatmap(sampleDistMatrix,
+         clustering_distance_rows = sampleDists,
+         clustering_distance_cols = sampleDists,
+         col = colors)
+
+#pca
+pcaData <- plotPCA(vsd, intgroup = c( "patient"), returnData = TRUE)
+percentVar <- round(100 * attr(pcaData, "percentVar"))
+ggplot(pcaData, aes(x = PC1, y = PC2, color = patient)) +
+  geom_point(size =3) +
+  xlab(paste0("PC1: ", percentVar[1], "% variance")) +
+  ylab(paste0("PC2: ", percentVar[2], "% variance")) +
+  coord_fixed()+
+  ggrepel::geom_label_repel(aes(label=name),data = pcaData )
+#geom_text_repel(data=allres[allres$show !='Not',], aes(label=external_gene_name))
+```
+
+
+
+```{r}
+###############
+#annotation
+
+library(clusterProfiler)
+up.gene = degene %>% 
+          rownames_to_column(var = 'gene') %>%
+          filter(log2FoldChange>1, padj<0.01) %>% 
+          pull(gene)
+down.gene = degene %>% 
+          rownames_to_column(var = 'gene') %>%
+          filter(log2FoldChange<(-1), padj<0.01) %>% 
+           pull(gene)
+eg = bitr(up.gene, fromType="SYMBOL", toType="ENTREZID", OrgDb="org.Hs.eg.db")
+mkk <- enrichKEGG(gene = eg$ENTREZID,organism = 'hsa')
+dotplot(mkk,
+        title = 'Upregulated KEGG pathway in BDV patients')
+eg.d = bitr(down.gene, fromType="SYMBOL", toType="ENTREZID", OrgDb="org.Hs.eg.db")
+mkk.d <- enrichKEGG(gene = eg.d$ENTREZID,organism = 'hsa')
+dotplot(mkk.d,title = 'Downregulated KEGG pathway in BDV patients')
+
+```
+
+
+```{r}
+#pathway details
+library("pathview")
+ pathview(gene.data  = mkk,
+                     pathway.id = "hsa04610",
+                     species    = "hsa")
+browseKEGG(mkk, 'hsa04610')
+
+#c7 gene
+
+myC7<-read.gmt("~/Dropbox (Partners HealthCare)/OXPHOS/loading_data/ALL/c7.all.v6.2.symbols.gmt")
+
+mkkx <- setReadable(mkk, 'org.Hs.eg.db', 'ENTREZID')
+egmt <- enricher(up.gene, TERM2GENE=myC7)
+head(egmt)
+dotplot(egmt)
+heatplot(egmt,foldChange = up.gene.fc,showCategory = 10)
+
+up.gene2 = degene %>% 
+          rownames_to_column(var = 'gene') %>%
+          filter(log2FoldChange>1, padj<0.1) 
+up.gene.fc = up.gene2[,'log2FoldChange']
+names(up.gene.fc)= up.gene2$Gene
+heatplot(mkkx,foldChange = up.gene.fc)
+          
+
+```
+
+ssgsea analysis before and after the combat correction
+
+for KEGG  gene signature
+
+```{r}
+library(GSVA)
+library(org.Hs.eg.db)
+library(GSVAdata)
+myC2<-getGmt("~/Dropbox (Partners HealthCare)/OXPHOS/loading_data/ALL/c2.cp.kegg.v6.2.symbols.gmt", 
+             geneIdType=SymbolIdentifier(),
+             collectionType=BroadCollection(category="c2"), sep="\t")
+canonicalC2BroadSets <- myC2[c(grep("^KEGG", names(myC2)))]
+
+BDV.kegg.gsva <- gsva(as.matrix(expr.data.annot), 
+                          canonicalC2BroadSets, 
+                          min.sz=5, max.sz=500,kcdf="Poisson", 
+                          mx.diff=TRUE, verbose=FALSE, 
+                          parallel.sz=2, ssgsea.norm=TRUE)
+
+
+
+```
+
+
+```{r}
+#volcalno plot
+degene=as.data.frame(res)
+degene=degene[rownames(degene)%in% c(up.gene,down.gene),]
+degene<- degene %>% 
+  rownames_to_column(var = 'Gene') %>%
+  mutate(Threshold = case_when(log2FoldChange>1 &padj<0.01 ~ 'Up',
+                               log2FoldChange<1 &padj<0.01 ~ 'Down',
+                               TRUE ~ 'No_sig')) %>%
+  mutate(marked = case_when(abs(log2FoldChange)>10&padj<0.01 ~ 'marked',
+                               TRUE ~ 'No_marked'))
+library(ggrepel)
+p=ggplot(degene,aes(x=log2FoldChange,y=-log10(padj),fill=Threshold,color=Threshold))
+p+geom_point(alpha=0.6)+scale_color_manual(values=c("blue", "grey","red"))+
+ labs(x="log2 (fold change)",y="-log10 (p.adj)")+
+geom_text_repel(data=degene[degene$marked =='marked',],
+                aes(label=Gene))
+
+degene=degene[order(degene$log2FoldChange),]
+degene[1:17,1]
+```
+
+cibersort analysis
+```{r}
+#cibersort rel
+cibersort.bdv = read.csv('./CIBERSORT.Output_BDV_rel_TPM.csv')
+
+all(rownames(sample.info)==cibersort.bdv$Input.Sample)
+ciber.info = cbind(cibersort.bdv,sample.info)
+ciber.info.plot <- ciber.info %>% 
+  gather(key = 'Cell_type',value = 'Infiltration',
+         colnames(cibersort.bdv)[-1]) %>% 
+  filter(!(Cell_type %in% c('P.value','Pearson.Correlation','Absolute.score','RMSE'))) %>%
+                    mutate(group = factor(group,levels = c('HC','BD')))
+
+
+
+
+ggboxplot(ciber.info.plot,x = 'Cell_type',y='Infiltration',
+          color = 'group',add = 'jitter',
+          palette = 'npg',ylab = 'Relative cell Infiltration')+
+  theme(axis.text.x=element_text(angle=90, size=8))+
+  stat_compare_means(aes(group=group),paired=T,label = 'p.signif')
+
+```
+
+```{r}
+# absolute score
+cibersort.bdv = read.csv('./CIBERSORT.Output_Abs_BDV_TPM.csv')
+
+library(ggpubr)
+ciber.info = cbind(cibersort.bdv,sample.info)
+ciber.info.plot <- ciber.info %>% gather(key = 'Cell_type',value = 'Infiltration',
+                                         colnames(cibersort.bdv)[-1]) %>% 
+  filter(!(Cell_type %in% c('P.value','Pearson.Correlation','Absolute.score'))) %>%
+   mutate(group = factor(group,levels = c('HC','BD')))
+
+
+
+ggboxplot(ciber.info.plot,x = 'Cell_type',y='Infiltration',
+          ylab = 'Absolute Cell infiltration',
+          color = 'group',add = 'jitter',palette = 'npg')+
+  theme(axis.text.x=element_text(angle=90, size=10, vjust=0.5))+
+  stat_compare_means(aes(group=group),label = 'p.signif')
+```
+
+TRUST analysis
+
+```{r}
+#clonotype analyssi
+#reportgene
+bcr_files=list.files('./trust_BDV',full.names = T,pattern = '.bcr_clones.txt')
+bcrdata=data.frame()
+for (file in bcr_files) {
+  tmp=fread(file,data.table = F)
+  name=gsub(pattern = "./trust_BDV/(.*).bcr_clones.txt",replacement = '\\1',file)
+  tmpdata=tmp[,"Cgene",drop=F]
+  colnames(tmpdata)[1]="genename"
+  tmpdata$sample=name
+  tmpdata=tmpdata[nchar(tmpdata$genename)!=0,]
+  bcrdata=rbind(bcrdata,tmpdata)
+  
+  
+}
+bcrdata$type=unlist(lapply(strsplit(bcrdata$genename,split = '[-]'),'[',1 ))
+bcrdata$type=unlist(lapply(strsplit(bcrdata$type,split = '[*]'),'[',1 ))
+bcrdata<- bcrdata %>% mutate(group=str_remove(sample,pattern = '\\d+')) %>%
+  mutate(Group=substr(sample,1,2))
+
+library(ggsci)
+bcrdata %>%group_by(Group,type)%>% summarise(n=n()) %>%
+  group_by(Group) %>%
+  filter(!(type%in%c('IGHE','IGHG4','IGHG3'))) %>%
+  mutate(percentage = round(n/sum(n),2)*100) %>%
+  mutate(pos = cumsum(percentage) - (0.5 * percentage)) %>% 
+  mutate(type=factor(type,levels = rev(unique(tmp))  )) %>% 
+  ggplot(aes_string(x="Group",y='percentage',fill="type") ) +
+  geom_bar(stat = 'identity',alpha=0.8)+
+  labs(y='Percentage')+
+  scale_fill_npg()+
+  geom_text( aes(x = Group, y = pos, label = paste0(percentage,"%")),
+                       size=4)
+
+```
+
+```{r}
+#clonotype analyssi
+#tcr
+tcr_files=list.files('./trust_BDV',full.names = T,pattern = '.tcr_clones.txt')
+tcrdata=data.frame()
+for (file in tcr_files) {
+  tmp=fread(file,data.table = F)
+  name=gsub(pattern = "./trust_BDV/(.*).tcr_clones.txt",replacement = '\\1',file)
+  tmpdata=tmp[,"Cgene",drop=F]
+  colnames(tmpdata)[1]="genename"
+  tmpdata$sample=name
+  tmpdata=tmpdata[nchar(tmpdata$genename)!=0,]
+  tcrdata=rbind(tcrdata,tmpdata)
+  
+  
+}
+tcrdata$type=unlist(lapply(strsplit(tcrdata$genename,split = '[-]'),'[',1 ))
+tcrdata$type=unlist(lapply(strsplit(tcrdata$type,split = '[*]'),'[',1 ))
+tcrdata<- tcrdata %>% mutate(group=str_remove(sample,pattern = '\\d+')) %>%
+  mutate(Group=substr(sample,1,2))
+
+library(ggsci)
+tcrdata %>%group_by(Group,type)%>% summarise(n=n()) %>%
+  group_by(Group) %>%
+  filter(!(type%in%c('IGHE','IGHG4','IGHG3'))) %>%
+  mutate(percentage = round(n/sum(n),2)*100) %>%
+  mutate(pos = cumsum(percentage) - (0.5 * percentage)) %>% 
+  mutate(type=factor(type,levels = rev(unique(tmp))  )) %>% 
+  ggplot(aes_string(x="Group",y='percentage',fill="type") ) +
+  geom_bar(stat = 'identity',alpha=0.8)+
+  labs(y='Percentage')+
+  scale_fill_npg()+
+  geom_text( aes(x = Group, y = pos, label = paste0(percentage,"%")),
+                       size=4)
+
+
+```
+
+
+
+```{r}
+#compare the clonality and other index
+sum_files=list.files('./trust_BDV',full.names = T,pattern = '.summary.txt')
+
+for (file in sum_files) {
+  tmp=fread(file,data.table = F)
+  name=gsub(pattern = "./trust_BDV/(.*).summary.txt",replacement = '\\1',file)
+  colnames(tmp)[2]=name
+  if (file==sum_files[1]) {
+    sumdata=tmp
+  }
+  else{
+    sumdata=cbind(sumdata,tmp[,2,drop=F])
+  }
+}
+
+#slect row :slice 
+#tcr clonality and entropy have diff
+sumdata %>%  
+  gather(key = 'Patient',value = 'value',-V1) %>%
+  mutate(Group=substr(Patient,1,2)) %>% 
+  filter( !grepl("reads",V1)) %>%
+  filter(V1=='tcr_entropy') %>%
+  ggviolin(x='Group',y='value',color = 'Group',
+           add.params = list(fill = "white"),
+           add = 'boxplot',ylab = 'TCR Entropy',
+           fill = 'Group',alpha = 0.3)+
+  stat_compare_means(aes(group=Group))
+```
+
+
+```{r}
+#IL cytokine 
+loc=grep(pattern = '^IL',expr.data.annot.tpm$gene_name)
+selgene=c('TNG',"IL23A","IL17B","IL6","IL2","IL12A")
+IL.tpm=expr.data.annot.tpm[expr.data.annot.tpm$gene_name%in%selgene,]
+rownames(IL.tpm)=IL.tpm$gene_name
+IL.tpm=IL.tpm[,-1]
+IL.tpm=IL.tpm[rowSums(IL.tpm)>0,]
+IL.tpm=log2(IL.tpm+1)
+pheatmap(IL.tpm,scale = 'row',cluster_cols = F,fontsize = 5)
+plotCounts(dds, 'TNF', intgroup = "group",returnData = T)->tmp
+ggboxplot(tmp,x='group',y='count',color = 'group',add = 'jitter',ylab = 'IL6 normalized count')+stat_compare_means()
+
+
+View(IL.tpm[ IL.tpm$padj<0.1,])
+```
+
+```{r}
+#HLA analysis
+hla.files=list.files('./HLA_tsv',pattern = '.tsv',full.names = T)
+hla.data=lapply(hla.files, read.delim)
+hla.data=do.call(rbind,hla.data)
+hla.data$X=gsub(basename(hla.files),pattern = '_result.tsv',replacement = '')
+hla.data[,1:7] %>% gather(key = "Type",value = 'hla',-X) %>%
+  mutate(HLA=substr(hla,1,4),Group=substr(X,1,2),Type=substr(Type,1,1)) %>%
+  group_by(Group,HLA) %>% summarise(Count=n()) %>%
+  ggbarplot( "HLA", "Count",
+  fill = "Group", color = "Group",
+  label = TRUE,alpha=0.6,
+  position = position_dodge(0.9),palette = "npg")
+  
+x <- matrix(c(2, 7, 6, 3), ncol = 2)
+colnames(x)=c('HC','BD')
+chisq.test(x) 
+  
+  ggplot(aes(x=HLA,y=..count..,fill=Group) ) +
+  geom_bar(alpha=0.8,position = 'dodge')+scale_fill_npg()
+  
+  
+  ggplot(aes_string(x="Group",y='percentage',fill="type") ) +
+  geom_bar(stat = 'identity',alpha=0.8)+
+  labs(y='Percentage')+
+  scale_fill_npg()+
+  geom_text( aes(x = Group, y = pos, label = paste0(percentage,"%")),
+                       size=4)
+
+```
+
+TCR of MixCR visulization
+
+```{r}
+#
+
+library(tcR)
+# immdata1.eq=parse.folder("~/Dropbox (Partners HealthCare)/BDV/BDV_RNAseq/MixCR/MixCR/", 
+# .format = 'mitcr')
+# immdata1.eq <- parse.mitcr("~/Dropbox (Partners HealthCare)/BDV/BDV_RNAseq/MixCR/MixCR/BDU1.report")
+
+tcr.files = list.files(pattern = "tcr_clones.txt",
+                       path = "~/Dropbox (Partners HealthCare)/BDV/BDV_RNAseq/trust_BDV/",
+                       full.names = T)
+#d <- kmer.profile(km)
+#vis.logo(d)
+get_Kmer <- function(filename,k=7,n=100){
+  for (file in filename) {
+  tmp=read.delim(file)
+  #calc the top consensus sequence
+  km <-get.kmers(tmp$cdr3aa, .head = n, .k = k, .verbose = F)
+  if (file==filename[1]) {
+    km.total=km
+  }
+  else{
+    km.total = rbind(km.total,km)
+  }
+  km.total=aggregate(.~Kmers,km.total,sum)
+  km.total=km.total[order(km.total$Count,decreasing = T),]
+  }
+  return(km.total)
+}
+#create the sequence 
+Create_seq<-function(km.res){
+  for (i in 1:nrow(km.res)) {
+  if (i==1) {
+    seq=rep(km.res[i,1],km.res[i,2])
+  }
+  else{
+    seq=c(seq,rep(km.res[i,1],km.res[i,2]))
+  }
+  }
+  return(seq)
+}
+require(ggseqlogo)
+
+km.bd = get_Kmer(filename = tcr.files[1:9],k=6)
+km.hc =  get_Kmer(filename = tcr.files[10:18],k=6)
+km.nor <- get.kmers(normal.blood.tcr[normal.blood.tcr$filename%in%male.adult,"cdr3aa"],
+                    .head = 100, .k = 6, .verbose = T)
+km.hc$prob=km.hc[,2]/sum(km.hc[,2])*100
+km.bd$prob=km.bd[,2]/sum(km.bd[,2])*100
+km.nor$prob=km.nor[,2]/sum(km.nor[,2])*100
+
+seq.bd=Create_seq(km.bd)
+ggseqlogo( seq.bd)
+seq.hc=Create_seq(km.hc)
+ggseqlogo( seq.hc)
+seq.nor = Create_seq(km.nor)
+ggseqlogo(seq.nor)
+
+
+
+```
+
