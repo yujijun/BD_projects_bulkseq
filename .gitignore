@@ -17,3 +17,8 @@ bin-release/
 # should NOT be excluded as they contain compiler settings and other important
 # information for Eclipse / Flash Builder.
 .Rproj.user
+data-raw/*
+data_upstream/*
+*.RData
+output/*
+*.Rhistory

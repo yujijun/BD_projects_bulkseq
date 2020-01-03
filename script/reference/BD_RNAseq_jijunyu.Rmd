@@ -1,0 +1,42 @@
+---
+title: "BD_RNAseq_yujiun"
+author: "JijunYu"
+date: "12/3/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(DESeq2)
+library(data.table)
+library(tidyverse)
+library(ggplot2)
+library(pheatmap)
+options(stringsAsFactors = F)
+setwd("/Users/yujijun/Documents/01-Work/06-BD_project/BD_projects")
+library(ggpubr)
+library(methods)
+library(edgeR)
+```
+
+1. Merge and annotation 
+```{r annotation}
+#load gene_level annotation 
+geneAnno <- read.table("/Users/yujijun/Documents/01-Work/06-BD_project/BD_projects/data-raw/Gencode.v27.annotation.genes.csv", header = T, sep = ",")
+geneData = read.table("./data-raw/edgeR.genes.rsem.txt", header = FALSE, sep = "\t", row.names = 1)
+
+expr_data <- 
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

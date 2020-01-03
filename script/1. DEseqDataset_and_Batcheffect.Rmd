@@ -1,0 +1,152 @@
+---
+title: "DEseqDataset_and_batcheffect"
+author: "JijunYu"
+date: "12/24/2019"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r}
+library(limma)
+library(DESeq2)
+library(dplyr)
+library(stringi)
+library(stringr)
+library(tibble)
+library(ggplot2)
+library(corrplot)
+```
+# Some question about batch effect:
+## Q1: could we just add batch forum into design to remove batch effect?  
+## Ans1:
+(1) There's an important difference between removing a batch effect and modeling a batch effect.  
+(2) combat is remove batch effect,but DEseq2 is modeling batch effect.  
+(3) You would only remove the batch effect (e.g. using limma's removeBatchEffect function) if you were going to do some kind of downstream analysis that can't model the batch effects, such as training a classifier.  
+
+## Q2: we should always put the condition of interest at the end of the design formula for safety.
+
+## Q3: DEseqDataset and correcting for a batch in DESeq2:
+```{r message=FALSE, warning=FALSE}
+setwd("/Users/yujijun/Documents/01-Work/06-BD_project/BD_projects")
+expr.data.annot=read.delim('./data-raw/expr.count.company.expression',header = T)
+rownames(expr.data.annot) <- expr.data.annot$gene_name
+expr.data.annot <- expr.data.annot[,-1]
+colnames(expr.data.annot) <- gsub("_count","",colnames(expr.data.annot))
+sample.info <- data.frame(sample = colnames(expr.data.annot))
+sample.info <- sample.info %>% 
+  mutate(patient =  str_remove(sample,pattern = '\\d+')) %>% 
+  mutate(group =  case_when(patient=='HC' ~ 'HC',
+                            TRUE ~ 'BD')) %>%
+  column_to_rownames(var = 'sample')
+sample.info$batch <- factor(c(rep(1,10),rep(2,8),rep(3,1)))
+sample.info$patient <- factor(sample.info$patient,levels = c("HC","BDU","BDV"))
+sample.info$group <- factor(sample.info$group,levels = c("HC","BD"))
+dds <- DESeqDataSetFromMatrix(countData=round(as.matrix(expr.data.annot)),colData = sample.info,design = ~ batch)
+```
+
+```{r}
+print(sample.info)
+```
+because of this error (Model matrix not full rank), we can't use DEseq2 to remove batch effect with design = ~ batch + patient, So I can try to use limma to remove it.
+Another quick question: we also can't use design = patient + group, because of the same error message.
+
+## Q4:remove batch effect by limma
+```{r remove batch effect by limma:plotPCA}
+vsd <- vst(dds)
+plotPCA(vsd, "batch")
+assay(vsd) <- limma::removeBatchEffect(assay(vsd), vsd$batch)
+plotPCA(vsd, "batch")
+```
+From this figure,we can see that we can use limma to remove batch effect.
+
+## Q5:remove batch effect by limma and save new count matrix
+```{r}
+batch <- sample.info$batch
+count_data_before <- as.matrix(expr.data.annot)
+count_data_after <- limma::removeBatchEffect(count_data_before,batch)
+boxplot(as.data.frame(count_data_before),main="Original",las=2)
+boxplot(as.data.frame(count_data_after),main="Batch corrected",las=2)
+```
+count have some negative value after limma.
+
+## Q6：Use count dataset after batch effect to generate DEgenes.
+```{r create new dds and get DEgeen}
+#dds_nobatch <- DESeqDataSetFromMatrix(countData=round(as.matrix(count_data_after)),colData = sample.info,design = ~ patient)
+#some values in assay are negative.
+```
+
+## Q7: generate new 3 HC and 3 BD, and test If we can use this kind of method to remove  batch  effect.
+```{r}
+expr.data.annot$HC11 <- as.vector(apply(count_data_before[,1:3],MARGIN = 1,mean) + 1000)
+expr.data.annot$HC12 <- as.vector(apply(count_data_before[,4:6],MARGIN = 1,mean) + 1000)
+expr.data.annot$HC13 <- as.vector(apply(count_data_before[,7:10],MARGIN = 1,mean) + 1000)
+expr.data.annot$BDU_4 <- as.vector(apply(count_data_before[,11:13],MARGIN = 1,mean) + 1000)
+expr.data.annot$BDV_7 <- as.vector(apply(count_data_before[,14:16],MARGIN = 1,mean) + 1000)
+expr.data.annot$BDV_8 <- as.vector(apply(count_data_before[,17:19],MARGIN = 1,mean) + 1000)
+sample.info <- data.frame(sample = colnames(expr.data.annot))
+sample.info <- sample.info %>% 
+  mutate(patient =  str_remove(sample,pattern = '\\d+')) %>% 
+  mutate(group =  case_when(patient=='HC' ~ 'HC',
+                            TRUE ~ 'BD')) %>%
+  column_to_rownames(var = 'sample')
+sample.info$patient <- gsub("_","",sample.info$patient)
+sample.info$batch <- factor(c(rep(1,10),rep(2,8),rep(3,1),rep(4,6)))
+sample.info$patient <- factor(sample.info$patient,levels = c("HC","BDU","BDV"))
+sample.info$group <- factor(sample.info$group,levels = c("HC","BD"))
+dds <- DESeqDataSetFromMatrix(countData=round(as.matrix(expr.data.annot)),colData = sample.info,design = ~ batch+patient)
+vsd <- vst(dds)
+plotPCA(vsd, "batch")
+assay(vsd) <- limma::removeBatchEffect(assay(vsd), vsd$batch)
+plotPCA(vsd, "batch")
+assay(vsd) <- limma::removeBatchEffect(assay(vsd), vsd$batch)
+plotPCA(vsd, "patient")
+```
+## Q8: remove BDV6 and generate DE gene and enrichemnt 
+
+## Q9: PathSeq:http://software.broadinstitute.org/pathseq/
+understand PathSeq principle and generate 
+
+## Q10: clinical info correlation with some Gene:
+```{r message=FALSE, warning=FALSE}
+require(gdata)
+patient_info <- read.xls("/Users/yujijun/Documents/01-Work/06-BD_project/BD_projects/data-raw/clinical_info/patient info.xlsx",sheet = 2)
+patient_info_important <- patient_info %>% filter(improtant == "Yes")
+patient_info_all <- patient_info_important[,-grep("是否异常",colnames(patient_info_important))]
+patient_info_tmp <- patient_info_all[,-c(1,3,4,5)]
+rownames(patient_info_tmp) <- patient_info_tmp$item
+patient_info_tmp <- patient_info_tmp[,-1]
+colnames(patient_info_tmp) <- c(paste0("BDV",seq(1,6)),paste0("BDU",seq(1,3)))
+
+BD <- expr.data.annot[,c(c(14:19),c(11:13))]
+gene <- c("C1QA","C1QB","C1QC","FCER1A","HLA-DPA1","HLA-DPB1","HLA-DQA1","HLA-DRB1")
+
+cor_all <- c()
+pvalue_all <- c()
+for (j in seq(1,length(gene))){
+  gene_tmp <- gene[j]
+  cor_j <- c()
+  pvalue_j <-c()
+  for (i in seq(1,nrow(patient_info_tmp))){
+  tmp_j <- as.numeric(BD[gene_tmp,])
+  cor_test <- cor.test(tmp_j,as.numeric(patient_info_tmp[i,]))
+  cor_tmp <- as.numeric(cor_test$estimate)
+  cor_j <- c(cor_j,cor_tmp)
+  pvalue_j <- c(pvalue_j,cor_test$p.value)
+  }
+  cor_all <- c(cor_all,cor_j)
+  pvalue_all <- c(pvalue_all,pvalue_j)
+}
+
+cor_df <- matrix(cor_all,ncol=8)
+colnames(cor_df) <- gene
+rownames(cor_df) <- rownames(patient_info_tmp)
+cor_df <- t(cor_df)
+pvalue_df <- matrix(pvalue_all,ncol = 8)
+colnames(pvalue_df) <- gene
+rownames(pvalue_df) <- rownames(patient_info_tmp)
+pvalue_df <- t(pvalue_df)
+corrplot(cor_df, p.mat=pvalue_df,insig = "label_sig",
+         sig.level = c(.001,.01,.05),pch.cex = .9, pch.col = "white")
+
+```

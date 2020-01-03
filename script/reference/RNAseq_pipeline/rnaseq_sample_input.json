@@ -1,0 +1,19 @@
+{
+  "RNA_Seq.fastqs": {"fastq1":"/cluster/asahu/data/cdk4-resistance-22samples/SN0146720/G102191.MGHCC0001-A_f.fastq", "fastq2":"/cluster/asahu/data/cdk4-resistance-22samples/SN0146720/G102191.MGHCC0001-A_r.fastq", "prefix":"MGHCC0001-A"},
+
+
+  "RNA_Seq.star.starIndex": "/cluster/cidc/Reference/Human/hg38/hg38_gencodev27_starIndex_overhang100.tar.gz",
+  "RNA_Seq.star.memory": "150",
+  "RNA_Seq.star.disk_space": "300",
+  "RNA_Seq.star.num_threads": "10",
+  "RNA_Seq.star.num_preempt": "0",
+
+  "RNA_Seq.rsem.rsem_reference": "/cluster/cidc/Reference/Human/hg38/rsem_reference.tar.gz",
+  "RNA_Seq.rsem.memory": "100",
+  "RNA_Seq.rsem.disk_space": "300",
+  "RNA_Seq.rsem.num_threads": "10",
+  "RNA_Seq.rsem.num_preempt": "0",
+
+  
+  "RNA_Seq.trust.genome": "hg38"
+}

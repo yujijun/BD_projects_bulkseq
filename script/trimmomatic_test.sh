@@ -1,1 +1,0 @@
-java -jar /data/programs/Trimmomatic/0.39/trimmomatic-0.39.jar PE -threads 20 -phred33 BDU1_1.fq.gz BDU1_2.fq.gz BDU1_1.clean.fq.gz BDU1_1.unpaired.fq.gz BDU1_2.clean.fq.gz BDU1_2.unpaired.fq.gz ILLUMINACLIP:/data/programs/Trimmomatic/0.39/adapters/TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:50

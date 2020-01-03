@@ -1,0 +1,464 @@
+[2018-08-02 18:08:00,22] [info] Running with database db.url = jdbc:hsqldb:mem:c56c0837-ece4-41a4-a38e-dcc8ade94097;shutdown=false;hsqldb.tx=mvcc
+[2018-08-02 18:08:04,59] [info] Running migration RenameWorkflowOptionsInMetadata with a read batch size of 100000 and a write batch size of 100000
+[2018-08-02 18:08:04,60] [info] [RenameWorkflowOptionsInMetadata] 100%
+[2018-08-02 18:08:04,69] [info] Running with database db.url = jdbc:hsqldb:mem:24a3008b-8c78-4bdd-9efe-5c5efea8abf4;shutdown=false;hsqldb.tx=mvcc
+[2018-08-02 18:08:05,12] [info] Slf4jLogger started
+[2018-08-02 18:08:05,32] [info] Metadata summary refreshing every 2 seconds.
+[2018-08-02 18:08:05,33] [info] Starting health monitor with the following checks: DockerHub, Engine Database
+[2018-08-02 18:08:05,34] [info] WriteMetadataActor configured to write to the database with batch size 200 and flush rate 5 seconds.
+[2018-08-02 18:08:05,40] [info] CallCacheWriteActor configured to write to the database with batch size 100 and flush rate 3 seconds.
+[2018-08-02 18:08:06,17] [info] SingleWorkflowRunnerActor: Submitting workflow
+[2018-08-02 18:08:06,23] [info] Workflow 0c37d1b9-d0fe-4e3c-ac61-0df3416badd5 submitted.
+[2018-08-02 18:08:06,23] [info] SingleWorkflowRunnerActor: Workflow submitted [38;5;2m0c37d1b9-d0fe-4e3c-ac61-0df3416badd5[0m
+[2018-08-02 18:08:06,24] [info] 1 new workflows fetched
+[2018-08-02 18:08:06,24] [info] WorkflowManagerActor Starting workflow [38;5;2m0c37d1b9-d0fe-4e3c-ac61-0df3416badd5[0m
+[2018-08-02 18:08:06,25] [info] WorkflowManagerActor Successfully started WorkflowActor-0c37d1b9-d0fe-4e3c-ac61-0df3416badd5
+[2018-08-02 18:08:06,25] [info] Retrieved 1 workflows from the WorkflowStoreActor
+[2018-08-02 18:08:07,63] [info] MaterializeWorkflowDescriptorActor [[38;5;2m0c37d1b9[0m]: Call-to-Backend assignments: RNA_Seq.index -> SLURM, RNA_Seq.salmon -> SLURM, run_fastqc.post_fastqc -> SLURM, RNA_Seq.trust -> SLURM, run_fastqc.fastqc -> SLURM, RNA_Seq.star -> SLURM, RNA_Seq.rsem -> SLURM
+[2018-08-02 18:08:07,75] [[38;5;220mwarn[0m] SLURM [[38;5;2m0c37d1b9[0m]: Key/s [docker, memory] is/are not supported by backend. Unsupported attributes will not be part of job executions.
+[2018-08-02 18:08:07,76] [[38;5;220mwarn[0m] Couldn't find a suitable DSN, defaulting to a Noop one.
+[2018-08-02 18:08:07,77] [info] Using noop to send events.
+[2018-08-02 18:08:07,78] [[38;5;220mwarn[0m] SLURM [[38;5;2m0c37d1b9[0m]: Key/s [preemptible, bootDiskSizeGb, disks, docker, zones, memory] is/are not supported by backend. Unsupported attributes will not be part of job executions.
+[2018-08-02 18:08:07,78] [[38;5;220mwarn[0m] SLURM [[38;5;2m0c37d1b9[0m]: Key/s [preemptible, bootDiskSizeGb, disks, docker, memory] is/are not supported by backend. Unsupported attributes will not be part of job executions.
+[2018-08-02 18:08:07,79] [[38;5;220mwarn[0m] SLURM [[38;5;2m0c37d1b9[0m]: Key/s [docker, zones, memory] is/are not supported by backend. Unsupported attributes will not be part of job executions.
+[2018-08-02 18:08:07,79] [[38;5;220mwarn[0m] SLURM [[38;5;2m0c37d1b9[0m]: Key/s [preemptible, bootDiskSizeGb, disks, docker, zones, memory] is/are not supported by backend. Unsupported attributes will not be part of job executions.
+[2018-08-02 18:08:07,79] [[38;5;220mwarn[0m] SLURM [[38;5;2m0c37d1b9[0m]: Key/s [preemptible, disks, docker, memory] is/are not supported by backend. Unsupported attributes will not be part of job executions.
+[2018-08-02 18:08:07,79] [[38;5;220mwarn[0m] SLURM [[38;5;2m0c37d1b9[0m]: Key/s [preemptible, disks, docker, memory] is/are not supported by backend. Unsupported attributes will not be part of job executions.
+[2018-08-02 18:08:09,97] [info] WorkflowExecutionActor-0c37d1b9-d0fe-4e3c-ac61-0df3416badd5 [[38;5;2m0c37d1b9[0m]: Starting calls: SubWorkflow-fastqc1:-1:1, SubWorkflow-fastqc2:-1:1, RNA_Seq.salmon:NA:1, RNA_Seq.star:NA:1
+[2018-08-02 18:08:10,15] [[38;5;220mwarn[0m] DispatchedConfigAsyncJobExecutionActor [[38;5;2m0c37d1b9[0mRNA_Seq.salmon:NA:1]: Unrecognized runtime attribute keys: preemptible, bootDiskSizeGb, disks, docker, zones, memory
+[2018-08-02 18:08:10,15] [[38;5;220mwarn[0m] DispatchedConfigAsyncJobExecutionActor [[38;5;2m0c37d1b9[0mRNA_Seq.star:NA:1]: Unrecognized runtime attribute keys: preemptible, disks, docker, memory
+[2018-08-02 18:08:11,06] [info] DispatchedConfigAsyncJobExecutionActor [[38;5;2m0c37d1b9[0mRNA_Seq.star:NA:1]: [38;5;5m      set -euo pipefail # bash strict mode,avoid hidden errors 
+
+      if [[ /cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-star/inputs/cluster/cidc/Immunotherapy/RNASeq/RCC_PD1_Miao/fastq/CA209009_11_14_1.fastq.gz == *".tar" || /cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-star/inputs/cluster/cidc/Immunotherapy/RNASeq/RCC_PD1_Miao/fastq/CA209009_11_14_1.fastq.gz == *".tar.gz" ]];then
+        tar -xvvf /cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-star/inputs/cluster/cidc/Immunotherapy/RNASeq/RCC_PD1_Miao/fastq/CA209009_11_14_1.fastq.gz
+        fastq1_abs=$(for f in *_1.fastq*; do echo "$(pwd)/$f"; done|paste -s -d ',') # return the exact match formula when cannot find any matching.
+        fast2_abs=$(for f in *_2.fastq*; do echo "$(pwd)/$f"; done| paste -s -d ',')
+        
+        if [[ $fastq1_abs == *"*_1.fastq*" ]];then # no parted-end FASTQs found; then check single-end FASTQ
+          fastq1_abs=$(for f in *.fastq*; do echo "$(pwd)/$f"; done | paste -s -d ',')
+          fastq2_abs=''
+        fi
+
+      else
+        #make sure paths are absolute
+        fastq1_abs=/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-star/inputs/cluster/cidc/Immunotherapy/RNASeq/RCC_PD1_Miao/fastq/CA209009_11_14_1.fastq.gz
+        fastq2_abs=/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-star/inputs/cluster/cidc/Immunotherapy/RNASeq/RCC_PD1_Miao/fastq/CA209009_11_14_2.fastq.gz
+        if [[ $fastq1_abs != /* ]]; then
+          fastq1_abs=$PWD/$fastq1_abs
+          fastq2_abs=$PWD/$fastq2_abs
+        fi
+
+      fi
+      echo 'FASTQs:'
+      echo $fastq1_abs
+      echo $fastq2_abs
+      # filecmd
+      case $fastq1_abs in 
+		*.gz) fileCmd='zcat';;
+		*.bz) fileCmd='bzcat';;
+		*.fastq) fileCmd='cat';;
+		*) exit 1
+      esac
+      
+      mkdir starIndex
+      tar -xvvf /cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-star/inputs/cluster/cidc/Reference/Human/hg38/hg38_gencodev27_starIndex_overhang100.tar.gz -C starIndex --strip-components=1
+      echo $(date) "--Begin running STAR"
+      
+      mkdir star_out
+      STAR --runMode alignReads --readFilesIn $fastq1_abs $fastq2_abs --genomeDir starIndex --runThreadN 10 --outFileNamePrefix star_out/CA209009_11_14. --readFilesCommand $fileCmd --outSAMtype BAM Unsorted \
+--chimSegmentMin 15 \
+--chimJunctionOverhangMin 15 \
+--chimOutType WithinBAM SoftClip \
+--chimMainSegmentMultNmax 1 \
+--outFilterMultimapNmax 20 \
+--outFilterMismatchNmax 999 \
+--outFilterMismatchNoverLmax 0.1 \
+--outFilterType BySJout \
+--outFilterScoreMinOverLread 0.33 \
+--outFilterMatchNminOverLread 0.33 \
+--outFilterIntronMotifs None \
+--alignSJoverhangMin 8 \
+--alignSJDBoverhangMin 1 \
+--alignIntronMin 20 \
+--alignIntronMax 1000000 \
+--alignMatesGapMax 1000000 \
+--outSAMstrandField intronMotif \
+--quantMode TranscriptomeSAM GeneCounts \
+--outSAMunmapped None \
+--genomeLoad NoSharedMemory \ 
+ \[0m
+[2018-08-02 18:08:11,14] [info] DispatchedConfigAsyncJobExecutionActor [[38;5;2m0c37d1b9[0mRNA_Seq.star:NA:1]: executing: echo "chmod 777 -R *" >> /cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-star/execution/script
+sbatch -N 1 -J cromwell_0c37d1b9_star -D /cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-star -o /cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-star/execution/stdout -e /cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-star/execution/stderr -t 10000 \
+-n 10 --mem=8G \
+--wrap "docker run --rm -u root --mount type=tmpfs,destination=/mnt/ramdisk -v $(pwd):$(pwd) -i jinwang0611/star:v1 /bin/bash /cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-star/execution/script"
+[2018-08-02 18:08:11,37] [info] DispatchedConfigAsyncJobExecutionActor [[38;5;2m0c37d1b9[0mRNA_Seq.star:NA:1]: job id: 81160
+[2018-08-02 18:08:11,37] [info] DispatchedConfigAsyncJobExecutionActor [[38;5;2m0c37d1b9[0mRNA_Seq.star:NA:1]: Status change from - to WaitingForReturnCodeFile
+[2018-08-02 18:08:11,39] [info] DispatchedConfigAsyncJobExecutionActor [[38;5;2m0c37d1b9[0mRNA_Seq.salmon:NA:1]: [38;5;5mINDEX=$(echo $(ls /cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-salmon/inputs/cluster/cidc/Reference/Human/hg38/Indecies/Salmon-0.9.1-genCodeV27-index/hash.bin | head -n 1) | rev |  cut -d '/' -f 2- | rev)
+if [ -f "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-salmon/inputs/cluster/cidc/Immunotherapy/RNASeq/RCC_PD1_Miao/fastq/CA209009_11_14_2.fastq.gz" ]
+then
+  salmon quant --index $INDEX \
+             -1 "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-salmon/inputs/cluster/cidc/Immunotherapy/RNASeq/RCC_PD1_Miao/fastq/CA209009_11_14_1.fastq.gz" \
+             -2 "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-salmon/inputs/cluster/cidc/Immunotherapy/RNASeq/RCC_PD1_Miao/fastq/CA209009_11_14_2.fastq.gz" \
+             -o out_quant \
+             -p 4 \
+             --libType A \
+             -g /cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-salmon/inputs/cluster/cidc/Reference/Human/hg38/Genes/gencode.v27.annotation.gtf \
+            $(if [ 1 -eq 0 || 1 -eq  ]; then echo '--auxDir aux'; fi) \
+            $(if [ 1 -eq 0 ]; then echo '--seqBias'; fi) \
+            $(if [ 1 -eq  ]; then echo '--gcBias'; fi)
+else
+  salmon quant --index $INDEX \
+             -r "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-salmon/inputs/cluster/cidc/Immunotherapy/RNASeq/RCC_PD1_Miao/fastq/CA209009_11_14_1.fastq.gz" \
+             -o out_quant \
+             -p 4 \
+             --libType A \
+             -g /cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-salmon/inputs/cluster/cidc/Reference/Human/hg38/Genes/gencode.v27.annotation.gtf \
+            $(if [ 1 -eq 0 || 1 -eq  ]; then echo '--auxDir aux'; fi) \
+            $(if [ 1 -eq 0 ]; then echo '--seqBias'; fi) \
+            $(if [ 1 -eq  ]; then echo '--gcBias'; fi)
+fi      
+cp -r out_quant "CA209009_11_14".salmon
+tar -c "CA209009_11_14".salmon | gzip > "CA209009_11_14".salmon.tar.gz
+touch "out_quant/quant.genes.sf" # will be an empty file if geneMap is not specified
+cp -r out_quant/aux_info "CA209009_11_14".salmon.aux_info
+tar -c "CA209009_11_14".salmon.aux_info | gzip > "CA209009_11_14".salmon.aux_info.tar.gz[0m
+[2018-08-02 18:08:11,42] [info] DispatchedConfigAsyncJobExecutionActor [[38;5;2m0c37d1b9[0mRNA_Seq.salmon:NA:1]: executing: echo "chmod 777 -R *" >> /cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-salmon/execution/script
+sbatch -N 1 -J cromwell_0c37d1b9_salmon -D /cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-salmon -o /cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-salmon/execution/stdout -e /cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-salmon/execution/stderr -t 10000 \
+-n 4 --mem=16G \
+--wrap "docker run --rm -u root --mount type=tmpfs,destination=/mnt/ramdisk -v $(pwd):$(pwd) -i combinelab/salmon:0.9.1 /bin/bash /cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-salmon/execution/script"
+[2018-08-02 18:08:11,52] [info] DispatchedConfigAsyncJobExecutionActor [[38;5;2m0c37d1b9[0mRNA_Seq.salmon:NA:1]: job id: 81161
+[2018-08-02 18:08:11,52] [info] DispatchedConfigAsyncJobExecutionActor [[38;5;2m0c37d1b9[0mRNA_Seq.salmon:NA:1]: Status change from - to WaitingForReturnCodeFile
+[2018-08-02 18:08:12,07] [info] a21c6f57-cadd-45f3-9152-ca98d5111ef8-SubWorkflowActor-SubWorkflow-fastqc1:-1:1 [[38;5;2ma21c6f57[0m]: Starting calls: run_fastqc.fastqc:NA:1
+[2018-08-02 18:08:12,07] [info] 5dfc02f4-836c-4b97-9c99-c383278b6a3d-SubWorkflowActor-SubWorkflow-fastqc2:-1:1 [[38;5;2m5dfc02f4[0m]: Starting calls: run_fastqc.fastqc:NA:1
+[2018-08-02 18:08:12,08] [[38;5;220mwarn[0m] DispatchedConfigAsyncJobExecutionActor [[38;5;2ma21c6f57[0mrun_fastqc.fastqc:NA:1]: Unrecognized runtime attribute keys: preemptible, bootDiskSizeGb, disks, docker, zones, memory
+[2018-08-02 18:08:12,08] [[38;5;220mwarn[0m] DispatchedConfigAsyncJobExecutionActor [[38;5;2m5dfc02f4[0mrun_fastqc.fastqc:NA:1]: Unrecognized runtime attribute keys: preemptible, bootDiskSizeGb, disks, docker, zones, memory
+[2018-08-02 18:08:13,69] [info] DispatchedConfigAsyncJobExecutionActor [[38;5;2m5dfc02f4[0mrun_fastqc.fastqc:NA:1]: [38;5;5mmkdir output
+mkdir ready
+fastqc "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-fastqc2/run_fastqc/5dfc02f4-836c-4b97-9c99-c383278b6a3d/call-fastqc/inputs/cluster/cidc/Immunotherapy/RNASeq/RCC_PD1_Miao/fastq/CA209009_11_14_2.fastq.gz" \
+       --extract \
+       -o output
+HTML=$(ls ./output/*.html)
+ZIP=$(ls ./output/*.zip)
+DATA=$(ls ./output/*/fastqc_data.txt)
+SUMMARY=$(ls ./output/*/summary.txt)
+mv "$HTML" "CA209009_11_14_2".fastqc.html
+mv "$ZIP" "CA209009_11_14_2".fastqc.zip
+mv "$DATA" "CA209009_11_14_2".fastqc.data.txt
+mv "$SUMMARY" "CA209009_11_14_2".fastqc.summary.txt
+cat "CA209009_11_14_2".fastqc.data.txt | \
+    grep 'Total Sequences' | \
+    head -n 1 | \
+    cut -f 2 > total.txt
+rm -r output/[0m
+[2018-08-02 18:08:13,69] [info] DispatchedConfigAsyncJobExecutionActor [[38;5;2ma21c6f57[0mrun_fastqc.fastqc:NA:1]: [38;5;5mmkdir output
+mkdir ready
+fastqc "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-fastqc1/run_fastqc/a21c6f57-cadd-45f3-9152-ca98d5111ef8/call-fastqc/inputs/cluster/cidc/Immunotherapy/RNASeq/RCC_PD1_Miao/fastq/CA209009_11_14_1.fastq.gz" \
+       --extract \
+       -o output
+HTML=$(ls ./output/*.html)
+ZIP=$(ls ./output/*.zip)
+DATA=$(ls ./output/*/fastqc_data.txt)
+SUMMARY=$(ls ./output/*/summary.txt)
+mv "$HTML" "CA209009_11_14_1".fastqc.html
+mv "$ZIP" "CA209009_11_14_1".fastqc.zip
+mv "$DATA" "CA209009_11_14_1".fastqc.data.txt
+mv "$SUMMARY" "CA209009_11_14_1".fastqc.summary.txt
+cat "CA209009_11_14_1".fastqc.data.txt | \
+    grep 'Total Sequences' | \
+    head -n 1 | \
+    cut -f 2 > total.txt
+rm -r output/[0m
+[2018-08-02 18:08:13,74] [info] DispatchedConfigAsyncJobExecutionActor [[38;5;2m5dfc02f4[0mrun_fastqc.fastqc:NA:1]: executing: echo "chmod 777 -R *" >> /cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-fastqc2/run_fastqc/5dfc02f4-836c-4b97-9c99-c383278b6a3d/call-fastqc/execution/script
+sbatch -N 1 -J cromwell_5dfc02f4_fastqc -D /cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-fastqc2/run_fastqc/5dfc02f4-836c-4b97-9c99-c383278b6a3d/call-fastqc -o /cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-fastqc2/run_fastqc/5dfc02f4-836c-4b97-9c99-c383278b6a3d/call-fastqc/execution/stdout -e /cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-fastqc2/run_fastqc/5dfc02f4-836c-4b97-9c99-c383278b6a3d/call-fastqc/execution/stderr -t 10000 \
+-n 4 --mem=16G \
+--wrap "docker run --rm -u root --mount type=tmpfs,destination=/mnt/ramdisk -v $(pwd):$(pwd) -i biocontainers/fastqc:0.11.5 /bin/bash /cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-fastqc2/run_fastqc/5dfc02f4-836c-4b97-9c99-c383278b6a3d/call-fastqc/execution/script"
+[2018-08-02 18:08:13,75] [info] DispatchedConfigAsyncJobExecutionActor [[38;5;2ma21c6f57[0mrun_fastqc.fastqc:NA:1]: executing: echo "chmod 777 -R *" >> /cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-fastqc1/run_fastqc/a21c6f57-cadd-45f3-9152-ca98d5111ef8/call-fastqc/execution/script
+sbatch -N 1 -J cromwell_a21c6f57_fastqc -D /cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-fastqc1/run_fastqc/a21c6f57-cadd-45f3-9152-ca98d5111ef8/call-fastqc -o /cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-fastqc1/run_fastqc/a21c6f57-cadd-45f3-9152-ca98d5111ef8/call-fastqc/execution/stdout -e /cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-fastqc1/run_fastqc/a21c6f57-cadd-45f3-9152-ca98d5111ef8/call-fastqc/execution/stderr -t 10000 \
+-n 4 --mem=16G \
+--wrap "docker run --rm -u root --mount type=tmpfs,destination=/mnt/ramdisk -v $(pwd):$(pwd) -i biocontainers/fastqc:0.11.5 /bin/bash /cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-fastqc1/run_fastqc/a21c6f57-cadd-45f3-9152-ca98d5111ef8/call-fastqc/execution/script"
+[2018-08-02 18:08:14,05] [info] DispatchedConfigAsyncJobExecutionActor [[38;5;2ma21c6f57[0mrun_fastqc.fastqc:NA:1]: job id: 81162
+[2018-08-02 18:08:14,05] [info] DispatchedConfigAsyncJobExecutionActor [[38;5;2ma21c6f57[0mrun_fastqc.fastqc:NA:1]: Status change from - to WaitingForReturnCodeFile
+[2018-08-02 18:08:14,06] [info] DispatchedConfigAsyncJobExecutionActor [[38;5;2m5dfc02f4[0mrun_fastqc.fastqc:NA:1]: job id: 81163
+[2018-08-02 18:08:14,06] [info] DispatchedConfigAsyncJobExecutionActor [[38;5;2m5dfc02f4[0mrun_fastqc.fastqc:NA:1]: Status change from - to WaitingForReturnCodeFile
+[2018-08-02 18:14:08,18] [info] DispatchedConfigAsyncJobExecutionActor [[38;5;2m5dfc02f4[0mrun_fastqc.fastqc:NA:1]: Status change from WaitingForReturnCodeFile to Done
+[2018-08-02 18:14:10,07] [info] 5dfc02f4-836c-4b97-9c99-c383278b6a3d-SubWorkflowActor-SubWorkflow-fastqc2:-1:1 [[38;5;2m5dfc02f4[0m]: Starting calls: run_fastqc.post_fastqc:NA:1
+[2018-08-02 18:14:10,08] [[38;5;220mwarn[0m] DispatchedConfigAsyncJobExecutionActor [[38;5;2m5dfc02f4[0mrun_fastqc.post_fastqc:NA:1]: Unrecognized runtime attribute keys: preemptible, bootDiskSizeGb, disks, docker, memory
+[2018-08-02 18:14:10,96] [[38;5;220mwarn[0m] Localization via hard link has failed: /cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-fastqc2/run_fastqc/5dfc02f4-836c-4b97-9c99-c383278b6a3d/call-post_fastqc/inputs/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-fastqc2/run_fastqc/5dfc02f4-836c-4b97-9c99-c383278b6a3d/call-fastqc/execution/CA209009_11_14_2.fastqc.summary.txt -> /cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-fastqc2/run_fastqc/5dfc02f4-836c-4b97-9c99-c383278b6a3d/call-fastqc/execution/CA209009_11_14_2.fastqc.summary.txt: Operation not permitted
+[2018-08-02 18:14:10,97] [info] DispatchedConfigAsyncJobExecutionActor [[38;5;2m5dfc02f4[0mrun_fastqc.post_fastqc:NA:1]: [38;5;5mcat "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-fastqc2/run_fastqc/5dfc02f4-836c-4b97-9c99-c383278b6a3d/call-post_fastqc/inputs/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-fastqc2/run_fastqc/5dfc02f4-836c-4b97-9c99-c383278b6a3d/call-fastqc/execution/CA209009_11_14_2.fastqc.summary.txt" | \
+    awk -F "\t" '{print $2 "\t" $1}' > summary_map.txt[0m
+[2018-08-02 18:14:10,99] [info] DispatchedConfigAsyncJobExecutionActor [[38;5;2m5dfc02f4[0mrun_fastqc.post_fastqc:NA:1]: executing: echo "chmod 777 -R *" >> /cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-fastqc2/run_fastqc/5dfc02f4-836c-4b97-9c99-c383278b6a3d/call-post_fastqc/execution/script
+sbatch -N 1 -J cromwell_5dfc02f4_post_fastqc -D /cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-fastqc2/run_fastqc/5dfc02f4-836c-4b97-9c99-c383278b6a3d/call-post_fastqc -o /cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-fastqc2/run_fastqc/5dfc02f4-836c-4b97-9c99-c383278b6a3d/call-post_fastqc/execution/stdout -e /cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-fastqc2/run_fastqc/5dfc02f4-836c-4b97-9c99-c383278b6a3d/call-post_fastqc/execution/stderr -t 10000 \
+-n 1 --mem=2G \
+--wrap "docker run --rm -u root --mount type=tmpfs,destination=/mnt/ramdisk -v $(pwd):$(pwd) -i ubuntu:16.04 /bin/bash /cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-fastqc2/run_fastqc/5dfc02f4-836c-4b97-9c99-c383278b6a3d/call-post_fastqc/execution/script"
+[2018-08-02 18:14:11,09] [info] DispatchedConfigAsyncJobExecutionActor [[38;5;2m5dfc02f4[0mrun_fastqc.post_fastqc:NA:1]: job id: 81169
+[2018-08-02 18:14:11,09] [info] DispatchedConfigAsyncJobExecutionActor [[38;5;2m5dfc02f4[0mrun_fastqc.post_fastqc:NA:1]: Status change from - to WaitingForReturnCodeFile
+[2018-08-02 18:14:41,56] [info] DispatchedConfigAsyncJobExecutionActor [[38;5;2m5dfc02f4[0mrun_fastqc.post_fastqc:NA:1]: Status change from WaitingForReturnCodeFile to Done
+[2018-08-02 18:14:43,09] [info] 5dfc02f4-836c-4b97-9c99-c383278b6a3d-SubWorkflowActor-SubWorkflow-fastqc2:-1:1 [[38;5;2m5dfc02f4[0m]: Workflow run_fastqc complete. Final Outputs:
+{
+  "run_fastqc.zip": "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-fastqc2/run_fastqc/5dfc02f4-836c-4b97-9c99-c383278b6a3d/call-fastqc/execution/CA209009_11_14_2.fastqc.zip",
+  "run_fastqc.sequences": 48012590,
+  "run_fastqc.summary_raw": "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-fastqc2/run_fastqc/5dfc02f4-836c-4b97-9c99-c383278b6a3d/call-fastqc/execution/CA209009_11_14_2.fastqc.summary.txt",
+  "run_fastqc.summary": {
+    "Overrepresented sequences": "WARN",
+    "Sequence Length Distribution": "PASS",
+    "Basic Statistics": "PASS",
+    "Per sequence quality scores": "PASS",
+    "Per base N content": "PASS",
+    "Per sequence GC content": "WARN",
+    "Per base sequence content": "WARN",
+    "Sequence Duplication Levels": "FAIL",
+    "Adapter Content": "PASS",
+    "Per tile sequence quality": "PASS",
+    "Per base sequence quality": "PASS",
+    "Kmer Content": "FAIL"
+  },
+  "run_fastqc.html": "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-fastqc2/run_fastqc/5dfc02f4-836c-4b97-9c99-c383278b6a3d/call-fastqc/execution/CA209009_11_14_2.fastqc.html",
+  "run_fastqc.data": "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-fastqc2/run_fastqc/5dfc02f4-836c-4b97-9c99-c383278b6a3d/call-fastqc/execution/CA209009_11_14_2.fastqc.data.txt"
+}
+[2018-08-02 18:14:54,62] [info] DispatchedConfigAsyncJobExecutionActor [[38;5;2ma21c6f57[0mrun_fastqc.fastqc:NA:1]: Status change from WaitingForReturnCodeFile to Done
+[2018-08-02 18:14:56,07] [info] a21c6f57-cadd-45f3-9152-ca98d5111ef8-SubWorkflowActor-SubWorkflow-fastqc1:-1:1 [[38;5;2ma21c6f57[0m]: Starting calls: run_fastqc.post_fastqc:NA:1
+[2018-08-02 18:14:56,08] [[38;5;220mwarn[0m] DispatchedConfigAsyncJobExecutionActor [[38;5;2ma21c6f57[0mrun_fastqc.post_fastqc:NA:1]: Unrecognized runtime attribute keys: preemptible, bootDiskSizeGb, disks, docker, memory
+[2018-08-02 18:14:56,75] [info] DispatchedConfigAsyncJobExecutionActor [[38;5;2ma21c6f57[0mrun_fastqc.post_fastqc:NA:1]: [38;5;5mcat "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-fastqc1/run_fastqc/a21c6f57-cadd-45f3-9152-ca98d5111ef8/call-post_fastqc/inputs/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-fastqc1/run_fastqc/a21c6f57-cadd-45f3-9152-ca98d5111ef8/call-fastqc/execution/CA209009_11_14_1.fastqc.summary.txt" | \
+    awk -F "\t" '{print $2 "\t" $1}' > summary_map.txt[0m
+[2018-08-02 18:14:56,77] [info] DispatchedConfigAsyncJobExecutionActor [[38;5;2ma21c6f57[0mrun_fastqc.post_fastqc:NA:1]: executing: echo "chmod 777 -R *" >> /cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-fastqc1/run_fastqc/a21c6f57-cadd-45f3-9152-ca98d5111ef8/call-post_fastqc/execution/script
+sbatch -N 1 -J cromwell_a21c6f57_post_fastqc -D /cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-fastqc1/run_fastqc/a21c6f57-cadd-45f3-9152-ca98d5111ef8/call-post_fastqc -o /cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-fastqc1/run_fastqc/a21c6f57-cadd-45f3-9152-ca98d5111ef8/call-post_fastqc/execution/stdout -e /cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-fastqc1/run_fastqc/a21c6f57-cadd-45f3-9152-ca98d5111ef8/call-post_fastqc/execution/stderr -t 10000 \
+-n 1 --mem=2G \
+--wrap "docker run --rm -u root --mount type=tmpfs,destination=/mnt/ramdisk -v $(pwd):$(pwd) -i ubuntu:16.04 /bin/bash /cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-fastqc1/run_fastqc/a21c6f57-cadd-45f3-9152-ca98d5111ef8/call-post_fastqc/execution/script"
+[2018-08-02 18:14:56,88] [info] DispatchedConfigAsyncJobExecutionActor [[38;5;2ma21c6f57[0mrun_fastqc.post_fastqc:NA:1]: job id: 81170
+[2018-08-02 18:14:56,88] [info] DispatchedConfigAsyncJobExecutionActor [[38;5;2ma21c6f57[0mrun_fastqc.post_fastqc:NA:1]: Status change from - to WaitingForReturnCodeFile
+[2018-08-02 18:15:09,49] [info] DispatchedConfigAsyncJobExecutionActor [[38;5;2ma21c6f57[0mrun_fastqc.post_fastqc:NA:1]: Status change from WaitingForReturnCodeFile to Done
+[2018-08-02 18:15:11,07] [info] a21c6f57-cadd-45f3-9152-ca98d5111ef8-SubWorkflowActor-SubWorkflow-fastqc1:-1:1 [[38;5;2ma21c6f57[0m]: Workflow run_fastqc complete. Final Outputs:
+{
+  "run_fastqc.zip": "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-fastqc1/run_fastqc/a21c6f57-cadd-45f3-9152-ca98d5111ef8/call-fastqc/execution/CA209009_11_14_1.fastqc.zip",
+  "run_fastqc.sequences": 48012590,
+  "run_fastqc.summary_raw": "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-fastqc1/run_fastqc/a21c6f57-cadd-45f3-9152-ca98d5111ef8/call-fastqc/execution/CA209009_11_14_1.fastqc.summary.txt",
+  "run_fastqc.summary": {
+    "Overrepresented sequences": "WARN",
+    "Sequence Length Distribution": "PASS",
+    "Basic Statistics": "PASS",
+    "Per sequence quality scores": "PASS",
+    "Per base N content": "PASS",
+    "Per sequence GC content": "WARN",
+    "Per base sequence content": "WARN",
+    "Sequence Duplication Levels": "FAIL",
+    "Adapter Content": "PASS",
+    "Per tile sequence quality": "PASS",
+    "Per base sequence quality": "PASS",
+    "Kmer Content": "FAIL"
+  },
+  "run_fastqc.html": "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-fastqc1/run_fastqc/a21c6f57-cadd-45f3-9152-ca98d5111ef8/call-fastqc/execution/CA209009_11_14_1.fastqc.html",
+  "run_fastqc.data": "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-fastqc1/run_fastqc/a21c6f57-cadd-45f3-9152-ca98d5111ef8/call-fastqc/execution/CA209009_11_14_1.fastqc.data.txt"
+}
+[2018-08-02 18:16:49,63] [info] DispatchedConfigAsyncJobExecutionActor [[38;5;2m0c37d1b9[0mRNA_Seq.salmon:NA:1]: Status change from WaitingForReturnCodeFile to Done
+[2018-08-02 18:28:17,95] [info] DispatchedConfigAsyncJobExecutionActor [[38;5;2m0c37d1b9[0mRNA_Seq.star:NA:1]: Status change from WaitingForReturnCodeFile to Done
+[2018-08-02 18:28:19,97] [info] WorkflowExecutionActor-0c37d1b9-d0fe-4e3c-ac61-0df3416badd5 [[38;5;2m0c37d1b9[0m]: Starting calls: RNA_Seq.index:NA:1, RNA_Seq.rsem:NA:1
+[2018-08-02 18:28:19,98] [[38;5;220mwarn[0m] DispatchedConfigAsyncJobExecutionActor [[38;5;2m0c37d1b9[0mRNA_Seq.index:NA:1]: Unrecognized runtime attribute keys: docker, memory
+[2018-08-02 18:28:19,98] [[38;5;220mwarn[0m] DispatchedConfigAsyncJobExecutionActor [[38;5;2m0c37d1b9[0mRNA_Seq.rsem:NA:1]: Unrecognized runtime attribute keys: preemptible, disks, docker, memory
+[2018-08-02 18:28:20,76] [info] DispatchedConfigAsyncJobExecutionActor [[38;5;2m0c37d1b9[0mRNA_Seq.index:NA:1]: [38;5;5msamtools sort /cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-index/inputs/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-star/execution/star_out/CA209009_11_14.Aligned.out.bam > CA209009_11_14.sorted.bam
+samtools index CA209009_11_14.sorted.bam > CA209009_11_14.sorted.bam.bai[0m
+[2018-08-02 18:28:20,79] [info] DispatchedConfigAsyncJobExecutionActor [[38;5;2m0c37d1b9[0mRNA_Seq.index:NA:1]: executing: echo "chmod 777 -R *" >> /cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-index/execution/script
+sbatch -N 1 -J cromwell_0c37d1b9_index -D /cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-index -o /cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-index/execution/stdout -e /cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-index/execution/stderr -t 10000 \
+-n 4 --mem=8G \
+--wrap "docker run --rm -u root --mount type=tmpfs,destination=/mnt/ramdisk -v $(pwd):$(pwd) -i biocontainers/samtools:v1.3_cv2 /bin/bash /cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-index/execution/script"
+[2018-08-02 18:28:20,95] [info] DispatchedConfigAsyncJobExecutionActor [[38;5;2m0c37d1b9[0mRNA_Seq.index:NA:1]: job id: 81173
+[2018-08-02 18:28:20,95] [info] DispatchedConfigAsyncJobExecutionActor [[38;5;2m0c37d1b9[0mRNA_Seq.index:NA:1]: Status change from - to WaitingForReturnCodeFile
+[2018-08-02 18:28:20,97] [info] DispatchedConfigAsyncJobExecutionActor [[38;5;2m0c37d1b9[0mRNA_Seq.rsem:NA:1]: [38;5;5mmkdir rsem_reference
+tar -xvvf /cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-rsem/inputs/cluster/cidc/Reference/Human/hg38/rsem_reference.tar.gz -C rsem_reference --strip-components=1
+
+if [[ true == "true" ]];then
+    paired="--paired-end"
+else 
+    paired=""
+fi
+
+if [[ true == "true" ]];then
+    rspd="--estimate-rspd"
+else 
+    rspd=""
+fi
+
+mkdir rsem_out
+echo "rsem-calculate-expression $paired $rspd \
+    --num-threads 10 \
+    --bam \
+    --no-bam-output \
+    --fragment-length-max 1000 \
+    /cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-rsem/inputs/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-star/execution/star_out/CA209009_11_14.Aligned.toTranscriptome.out.bam rsem_reference/rsem_reference CA209009_11_14"
+
+rsem-calculate-expression $paired $rspd \
+    --num-threads 10 \
+    --bam  \
+    --no-bam-output \
+    --fragment-length-max 1000 \
+    /cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-rsem/inputs/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-star/execution/star_out/CA209009_11_14.Aligned.toTranscriptome.out.bam rsem_reference/rsem_reference  rsem_out/CA209009_11_14[0m
+[2018-08-02 18:28:21,00] [info] DispatchedConfigAsyncJobExecutionActor [[38;5;2m0c37d1b9[0mRNA_Seq.rsem:NA:1]: executing: echo "chmod 777 -R *" >> /cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-rsem/execution/script
+sbatch -N 1 -J cromwell_0c37d1b9_rsem -D /cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-rsem -o /cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-rsem/execution/stdout -e /cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-rsem/execution/stderr -t 10000 \
+-n 10 --mem=8G \
+--wrap "docker run --rm -u root --mount type=tmpfs,destination=/mnt/ramdisk -v $(pwd):$(pwd) -i jinwang0611/rsem:v1 /bin/bash /cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-rsem/execution/script"
+[2018-08-02 18:28:21,18] [info] DispatchedConfigAsyncJobExecutionActor [[38;5;2m0c37d1b9[0mRNA_Seq.rsem:NA:1]: job id: 81174
+[2018-08-02 18:28:21,18] [info] DispatchedConfigAsyncJobExecutionActor [[38;5;2m0c37d1b9[0mRNA_Seq.rsem:NA:1]: Status change from - to WaitingForReturnCodeFile
+[2018-08-02 18:59:29,06] [info] DispatchedConfigAsyncJobExecutionActor [[38;5;2m0c37d1b9[0mRNA_Seq.rsem:NA:1]: Status change from WaitingForReturnCodeFile to Done
+[2018-08-02 19:10:45,64] [info] DispatchedConfigAsyncJobExecutionActor [[38;5;2m0c37d1b9[0mRNA_Seq.index:NA:1]: Status change from WaitingForReturnCodeFile to Done
+[2018-08-02 19:10:46,97] [info] WorkflowExecutionActor-0c37d1b9-d0fe-4e3c-ac61-0df3416badd5 [[38;5;2m0c37d1b9[0m]: Starting calls: RNA_Seq.trust:NA:1
+[2018-08-02 19:10:46,98] [[38;5;220mwarn[0m] DispatchedConfigAsyncJobExecutionActor [[38;5;2m0c37d1b9[0mRNA_Seq.trust:NA:1]: Unrecognized runtime attribute keys: docker, zones, memory
+[2018-08-02 19:10:47,51] [[38;5;220mwarn[0m] Localization via hard link has failed: /cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-trust/inputs/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-index/execution/CA209009_11_14.sorted.bam.bai -> /cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-index/execution/CA209009_11_14.sorted.bam.bai: Operation not permitted
+[2018-08-02 19:10:47,53] [info] DispatchedConfigAsyncJobExecutionActor [[38;5;2m0c37d1b9[0mRNA_Seq.trust:NA:1]: [38;5;5mwork=$PWD
+fname="$(basename /cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-trust/inputs/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-index/execution/CA209009_11_14.sorted.bam)"
+echo $work
+echo $fname
+trust -f /cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-trust/inputs/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-index/execution/CA209009_11_14.sorted.bam -o $work/ -l 10 -I 10 -g hg38 -n 1 -c -E
+mv "$fname-TCR-ALL-coverage.txt" $work/CA209009_11_14.tcr_coverage.txt
+mv "$fname-TCR-ALL.txt" $work/CA209009_11_14.tcr_clones.txt
+mv "$fname-TCR-ALL.fa" $work/CA209009_11_14.tcr_clones.fa
+mv "$fname-TCR-ALL-extended.txt" $work/CA209009_11_14.tcr_extended.txt[0m
+[2018-08-02 19:10:47,55] [info] DispatchedConfigAsyncJobExecutionActor [[38;5;2m0c37d1b9[0mRNA_Seq.trust:NA:1]: executing: echo "chmod 777 -R *" >> /cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-trust/execution/script
+sbatch -N 1 -J cromwell_0c37d1b9_trust -D /cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-trust -o /cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-trust/execution/stdout -e /cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-trust/execution/stderr -t 10000 \
+-n 1 --mem=8G \
+--wrap "docker run --rm -u root --mount type=tmpfs,destination=/mnt/ramdisk -v $(pwd):$(pwd) -i gcr.io/cidc-dfci/trust:v3.0.2 /bin/bash /cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-trust/execution/script"
+[2018-08-02 19:10:47,65] [info] DispatchedConfigAsyncJobExecutionActor [[38;5;2m0c37d1b9[0mRNA_Seq.trust:NA:1]: job id: 81262
+[2018-08-02 19:10:47,65] [info] DispatchedConfigAsyncJobExecutionActor [[38;5;2m0c37d1b9[0mRNA_Seq.trust:NA:1]: Status change from - to WaitingForReturnCodeFile
+[2018-08-02 19:48:29,39] [info] DispatchedConfigAsyncJobExecutionActor [[38;5;2m0c37d1b9[0mRNA_Seq.trust:NA:1]: Status change from WaitingForReturnCodeFile to Done
+[2018-08-02 19:48:30,99] [info] WorkflowExecutionActor-0c37d1b9-d0fe-4e3c-ac61-0df3416badd5 [[38;5;2m0c37d1b9[0m]: Workflow RNA_Seq complete. Final Outputs:
+{
+  "RNA_Seq.fastqc2.summary": {
+    "Overrepresented sequences": "WARN",
+    "Sequence Length Distribution": "PASS",
+    "Basic Statistics": "PASS",
+    "Per sequence quality scores": "PASS",
+    "Per base N content": "PASS",
+    "Per sequence GC content": "WARN",
+    "Per base sequence content": "WARN",
+    "Sequence Duplication Levels": "FAIL",
+    "Adapter Content": "PASS",
+    "Per tile sequence quality": "PASS",
+    "Per base sequence quality": "PASS",
+    "Kmer Content": "FAIL"
+  },
+  "RNA_Seq.fastqc2.data": "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-fastqc2/run_fastqc/5dfc02f4-836c-4b97-9c99-c383278b6a3d/call-fastqc/execution/CA209009_11_14_2.fastqc.data.txt",
+  "RNA_Seq.salmon.lib_format_counts": "{\n    \"read_files\": \"( /cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-salmon/inputs/cluster/cidc/Immunotherapy/RNASeq/RCC_PD1_Miao/fastq/CA209009_11_14_1.fastq.gz, /cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-salmon/inputs/cluster/cidc/Immunotherapy/RNASeq/RCC_PD1_Miao/fastq/CA209009_11_14_2.fastq.gz )\",\n    \"expected_format\": \"IU\",\n    \"compatible_fragment_ratio\": 0.7429286529637164,\n    \"num_compatible_fragments\": 28170307,\n    \"num_assigned_fragments\": 37917917,\n    \"num_consistent_mappings\": 80349445,\n    \"num_inconsistent_mappings\": 31502067,\n    \"strand_mapping_bias\": 0.9920988004335313,\n    \"MSF\": 0,\n    \"OSF\": 1616,\n    \"ISF\": 634857,\n    \"MSR\": 0,\n    \"OSR\": 24718,\n    \"ISR\": 79714588,\n    \"SF\": 345320,\n    \"SR\": 2872767,\n    \"MU\": 0,\n    \"OU\": 0,\n    \"IU\": 0,\n    \"U\": 0\n}",
+  "RNA_Seq.index.bai_file": "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-index/execution/CA209009_11_14.sorted.bam.bai",
+  "RNA_Seq.rsem.isoforms": "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-rsem/execution/rsem_out/CA209009_11_14.isoforms.results",
+  "RNA_Seq.salmon.aux_info_tarball": "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-salmon/execution/CA209009_11_14.salmon.aux_info.tar.gz",
+  "RNA_Seq.fastqc2.sequences": 48012590,
+  "RNA_Seq.trust.tcr_clones_tab": "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-trust/execution/CA209009_11_14.tcr_clones.txt",
+  "RNA_Seq.index.sorted_bam": "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-index/execution/CA209009_11_14.sorted.bam",
+  "RNA_Seq.star.bamFile": "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-star/execution/star_out/CA209009_11_14.Aligned.out.bam",
+  "RNA_Seq.salmon.salmon_tarball": "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-salmon/execution/CA209009_11_14.salmon.tar.gz",
+  "RNA_Seq.salmon.logs_salmon_quant": "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-salmon/execution/out_quant/logs/salmon_quant.log",
+  "RNA_Seq.trust.tcr_clones_ext": "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-trust/execution/CA209009_11_14.tcr_extended.txt",
+  "RNA_Seq.salmon.libParams_flenDist": "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-salmon/execution/out_quant/libParams/flenDist.txt",
+  "RNA_Seq.star.read_counts": "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-star/execution/star_out/CA209009_11_14.ReadsPerGene.out.tab",
+  "RNA_Seq.star.transcriptome_bam": "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-star/execution/star_out/CA209009_11_14.Aligned.toTranscriptome.out.bam",
+  "RNA_Seq.fastqc1.summary_raw": "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-fastqc1/run_fastqc/a21c6f57-cadd-45f3-9152-ca98d5111ef8/call-fastqc/execution/CA209009_11_14_1.fastqc.summary.txt",
+  "RNA_Seq.fastqc1.html": "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-fastqc1/run_fastqc/a21c6f57-cadd-45f3-9152-ca98d5111ef8/call-fastqc/execution/CA209009_11_14_1.fastqc.html",
+  "RNA_Seq.salmon.quant_genes": "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-salmon/execution/out_quant/quant.genes.sf",
+  "RNA_Seq.star.junctions": "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-star/execution/star_out/CA209009_11_14.SJ.out.tab",
+  "RNA_Seq.fastqc2.html": "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-fastqc2/run_fastqc/5dfc02f4-836c-4b97-9c99-c383278b6a3d/call-fastqc/execution/CA209009_11_14_2.fastqc.html",
+  "RNA_Seq.fastqc1.summary": {
+    "Overrepresented sequences": "WARN",
+    "Sequence Length Distribution": "PASS",
+    "Basic Statistics": "PASS",
+    "Per sequence quality scores": "PASS",
+    "Per base N content": "PASS",
+    "Per sequence GC content": "WARN",
+    "Per base sequence content": "WARN",
+    "Sequence Duplication Levels": "FAIL",
+    "Adapter Content": "PASS",
+    "Per tile sequence quality": "PASS",
+    "Per base sequence quality": "PASS",
+    "Kmer Content": "FAIL"
+  },
+  "RNA_Seq.trust.tcr_clones_fa": "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-trust/execution/CA209009_11_14.tcr_clones.fa",
+  "RNA_Seq.rsem.genes": "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-rsem/execution/rsem_out/CA209009_11_14.genes.results",
+  "RNA_Seq.fastqc2.summary_raw": "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-fastqc2/run_fastqc/5dfc02f4-836c-4b97-9c99-c383278b6a3d/call-fastqc/execution/CA209009_11_14_2.fastqc.summary.txt",
+  "RNA_Seq.star.chimeric_junctions": "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-star/execution/star_out/CA209009_11_14.Chimeric.out.junction",
+  "RNA_Seq.star.logs": ["/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-star/execution/star_out/CA209009_11_14.Log.final.out", "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-star/execution/star_out/CA209009_11_14.Log.out", "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-star/execution/star_out/CA209009_11_14.Log.progress.out"],
+  "RNA_Seq.fastqc2.zip": "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-fastqc2/run_fastqc/5dfc02f4-836c-4b97-9c99-c383278b6a3d/call-fastqc/execution/CA209009_11_14_2.fastqc.zip",
+  "RNA_Seq.salmon.aux_info_meta_info": "\"{\\n    \\\"salmon_version\\\": \\\"0.9.1\\\",\\n    \\\"samp_type\\\": \\\"none\\\",\\n    \\\"quant_errors\\\": [],\\n    \\\"num_libraries\\\": 1,\\n    \\\"library_types\\\": [\\n        \\\"IU\\\"\\n    ],\\n    \\\"frag_dist_length\\\": 1001,\\n    \\\"seq_bias_correct\\\": false,\\n    \\\"gc_bias_correct\\\": false,\\n    \\\"num_bias_bins\\\": 4096,\\n    \\\"mapping_type\\\": \\\"mapping\\\",\\n    \\\"num_targets\\\": 199612,\\n    \\\"serialized_eq_classes\\\": false,\\n    \\\"eq_class_properties\\\": [],\\n    \\\"length_classes\\\": [\\n        514,\\n        656,\\n        1017,\\n        2265,\\n        109224\\n    ],\\n    \\\"index_seq_hash\\\": \\\"0acbb6919651beb0182512f492e9936c43dd7c0d189df41c402fbd4fc556f460\\\",\\n    \\\"index_name_hash\\\": \\\"7f3bad9c203835a3279acc3696a8ed6a509eef603f7a5c71cb83217991fa8477\\\",\\n    \\\"num_bootstraps\\\": 0,\\n    \\\"num_processed\\\": 48012590,\\n    \\\"num_mapped\\\": 37917917,\\n    \\\"percent_mapped\\\": 78.97494594646946,\\n    \\\"call\\\": \\\"quant\\\",\\n    \\\"start_time\\\": \\\"Thu Aug  2 22:07:51 2018\\\",\\n    \\\"end_time\\\": \\\"Thu Aug  2 22:14:36 ...",
+  "RNA_Seq.fastqc1.zip": "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-fastqc1/run_fastqc/a21c6f57-cadd-45f3-9152-ca98d5111ef8/call-fastqc/execution/CA209009_11_14_1.fastqc.zip",
+  "RNA_Seq.salmon.cmd_info": "\"{\\n    \\\"salmon_version\\\": \\\"0.9.1\\\",\\n    \\\"index\\\": \\\"/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-salmon/inputs/cluster/cidc/Reference/Human/hg38/Indecies/Salmon-0.9.1-genCodeV27-index\\\",\\n    \\\"mates1\\\": \\\"/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-salmon/inputs/cluster/cidc/Immunotherapy/RNASeq/RCC_PD1_Miao/fastq/CA209009_11_14_1.fastq.gz\\\",\\n    \\\"mates2\\\": \\\"/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-salmon/inputs/cluster/cidc/Immunotherapy/RNASeq/RCC_PD1_Miao/fastq/CA209009_11_14_2.fastq.gz\\\",\\n    \\\"output\\\": \\\"out_quant\\\",\\n    \\\"threads\\\": \\\"4\\\",\\n    \\\"libType\\\": \\\"A\\\",\\n    \\\"geneMap\\\": \\\"/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-salmon/inputs/cluster/cidc/Reference/Human/hg38/Genes/gencode.v27.annotati...",
+  "RNA_Seq.star.chimeric_bam_file": "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-star/execution/star_out/CA209009_11_14.Chimeric.out.sam",
+  "RNA_Seq.trust.tcr_coverage": "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-trust/execution/CA209009_11_14.tcr_coverage.txt",
+  "RNA_Seq.fastqc1.data": "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-fastqc1/run_fastqc/a21c6f57-cadd-45f3-9152-ca98d5111ef8/call-fastqc/execution/CA209009_11_14_1.fastqc.data.txt",
+  "RNA_Seq.fastqc1.sequences": 48012590,
+  "RNA_Seq.salmon.quant": "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-salmon/execution/out_quant/quant.sf"
+}
+[2018-08-02 19:48:31,07] [info] WorkflowManagerActor WorkflowActor-0c37d1b9-d0fe-4e3c-ac61-0df3416badd5 is in a terminal state: WorkflowSucceededState
+[2018-08-02 19:48:48,05] [info] SingleWorkflowRunnerActor workflow finished with status 'Succeeded'.
+{
+  "outputs": {
+    "RNA_Seq.fastqc2.summary": {
+      "Overrepresented sequences": "WARN",
+      "Sequence Length Distribution": "PASS",
+      "Basic Statistics": "PASS",
+      "Per sequence quality scores": "PASS",
+      "Per base N content": "PASS",
+      "Per sequence GC content": "WARN",
+      "Per base sequence content": "WARN",
+      "Sequence Duplication Levels": "FAIL",
+      "Adapter Content": "PASS",
+      "Per tile sequence quality": "PASS",
+      "Per base sequence quality": "PASS",
+      "Kmer Content": "FAIL"
+    },
+    "RNA_Seq.fastqc2.data": "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-fastqc2/run_fastqc/5dfc02f4-836c-4b97-9c99-c383278b6a3d/call-fastqc/execution/CA209009_11_14_2.fastqc.data.txt",
+    "RNA_Seq.salmon.lib_format_counts": "{\n    \"read_files\": \"( /cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-salmon/inputs/cluster/cidc/Immunotherapy/RNASeq/RCC_PD1_Miao/fastq/CA209009_11_14_1.fastq.gz, /cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-salmon/inputs/cluster/cidc/Immunotherapy/RNASeq/RCC_PD1_Miao/fastq/CA209009_11_14_2.fastq.gz )\",\n    \"expected_format\": \"IU\",\n    \"compatible_fragment_ratio\": 0.7429286529637164,\n    \"num_compatible_fragments\": 28170307,\n    \"num_assigned_fragments\": 37917917,\n    \"num_consistent_mappings\": 80349445,\n    \"num_inconsistent_mappings\": 31502067,\n    \"strand_mapping_bias\": 0.9920988004335313,\n    \"MSF\": 0,\n    \"OSF\": 1616,\n    \"ISF\": 634857,\n    \"MSR\": 0,\n    \"OSR\": 24718,\n    \"ISR\": 79714588,\n    \"SF\": 345320,\n    \"SR\": 2872767,\n    \"MU\": 0,\n    \"OU\": 0,\n    \"IU\": 0,\n    \"U\": 0\n}",
+    "RNA_Seq.index.bai_file": "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-index/execution/CA209009_11_14.sorted.bam.bai",
+    "RNA_Seq.rsem.isoforms": "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-rsem/execution/rsem_out/CA209009_11_14.isoforms.results",
+    "RNA_Seq.salmon.aux_info_tarball": "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-salmon/execution/CA209009_11_14.salmon.aux_info.tar.gz",
+    "RNA_Seq.fastqc2.sequences": 48012590,
+    "RNA_Seq.trust.tcr_clones_tab": "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-trust/execution/CA209009_11_14.tcr_clones.txt",
+    "RNA_Seq.index.sorted_bam": "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-index/execution/CA209009_11_14.sorted.bam",
+    "RNA_Seq.star.bamFile": "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-star/execution/star_out/CA209009_11_14.Aligned.out.bam",
+    "RNA_Seq.salmon.salmon_tarball": "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-salmon/execution/CA209009_11_14.salmon.tar.gz",
+    "RNA_Seq.salmon.logs_salmon_quant": "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-salmon/execution/out_quant/logs/salmon_quant.log",
+    "RNA_Seq.trust.tcr_clones_ext": "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-trust/execution/CA209009_11_14.tcr_extended.txt",
+    "RNA_Seq.salmon.libParams_flenDist": "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-salmon/execution/out_quant/libParams/flenDist.txt",
+    "RNA_Seq.star.read_counts": "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-star/execution/star_out/CA209009_11_14.ReadsPerGene.out.tab",
+    "RNA_Seq.star.transcriptome_bam": "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-star/execution/star_out/CA209009_11_14.Aligned.toTranscriptome.out.bam",
+    "RNA_Seq.fastqc1.summary_raw": "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-fastqc1/run_fastqc/a21c6f57-cadd-45f3-9152-ca98d5111ef8/call-fastqc/execution/CA209009_11_14_1.fastqc.summary.txt",
+    "RNA_Seq.fastqc1.html": "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-fastqc1/run_fastqc/a21c6f57-cadd-45f3-9152-ca98d5111ef8/call-fastqc/execution/CA209009_11_14_1.fastqc.html",
+    "RNA_Seq.salmon.quant_genes": "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-salmon/execution/out_quant/quant.genes.sf",
+    "RNA_Seq.star.junctions": "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-star/execution/star_out/CA209009_11_14.SJ.out.tab",
+    "RNA_Seq.fastqc2.html": "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-fastqc2/run_fastqc/5dfc02f4-836c-4b97-9c99-c383278b6a3d/call-fastqc/execution/CA209009_11_14_2.fastqc.html",
+    "RNA_Seq.fastqc1.summary": {
+      "Overrepresented sequences": "WARN",
+      "Sequence Length Distribution": "PASS",
+      "Basic Statistics": "PASS",
+      "Per sequence quality scores": "PASS",
+      "Per base N content": "PASS",
+      "Per sequence GC content": "WARN",
+      "Per base sequence content": "WARN",
+      "Sequence Duplication Levels": "FAIL",
+      "Adapter Content": "PASS",
+      "Per tile sequence quality": "PASS",
+      "Per base sequence quality": "PASS",
+      "Kmer Content": "FAIL"
+    },
+    "RNA_Seq.trust.tcr_clones_fa": "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-trust/execution/CA209009_11_14.tcr_clones.fa",
+    "RNA_Seq.rsem.genes": "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-rsem/execution/rsem_out/CA209009_11_14.genes.results",
+    "RNA_Seq.fastqc2.summary_raw": "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-fastqc2/run_fastqc/5dfc02f4-836c-4b97-9c99-c383278b6a3d/call-fastqc/execution/CA209009_11_14_2.fastqc.summary.txt",
+    "RNA_Seq.star.chimeric_junctions": "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-star/execution/star_out/CA209009_11_14.Chimeric.out.junction",
+    "RNA_Seq.star.logs": ["/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-star/execution/star_out/CA209009_11_14.Log.final.out", "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-star/execution/star_out/CA209009_11_14.Log.out", "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-star/execution/star_out/CA209009_11_14.Log.progress.out"],
+    "RNA_Seq.fastqc2.zip": "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-fastqc2/run_fastqc/5dfc02f4-836c-4b97-9c99-c383278b6a3d/call-fastqc/execution/CA209009_11_14_2.fastqc.zip",
+    "RNA_Seq.salmon.aux_info_meta_info": "{\n    \"salmon_version\": \"0.9.1\",\n    \"samp_type\": \"none\",\n    \"quant_errors\": [],\n    \"num_libraries\": 1,\n    \"library_types\": [\n        \"IU\"\n    ],\n    \"frag_dist_length\": 1001,\n    \"seq_bias_correct\": false,\n    \"gc_bias_correct\": false,\n    \"num_bias_bins\": 4096,\n    \"mapping_type\": \"mapping\",\n    \"num_targets\": 199612,\n    \"serialized_eq_classes\": false,\n    \"eq_class_properties\": [],\n    \"length_classes\": [\n        514,\n        656,\n        1017,\n        2265,\n        109224\n    ],\n    \"index_seq_hash\": \"0acbb6919651beb0182512f492e9936c43dd7c0d189df41c402fbd4fc556f460\",\n    \"index_name_hash\": \"7f3bad9c203835a3279acc3696a8ed6a509eef603f7a5c71cb83217991fa8477\",\n    \"num_bootstraps\": 0,\n    \"num_processed\": 48012590,\n    \"num_mapped\": 37917917,\n    \"percent_mapped\": 78.97494594646946,\n    \"call\": \"quant\",\n    \"start_time\": \"Thu Aug  2 22:07:51 2018\",\n    \"end_time\": \"Thu Aug  2 22:14:36 2018\"\n}",
+    "RNA_Seq.fastqc1.zip": "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-fastqc1/run_fastqc/a21c6f57-cadd-45f3-9152-ca98d5111ef8/call-fastqc/execution/CA209009_11_14_1.fastqc.zip",
+    "RNA_Seq.salmon.cmd_info": "{\n    \"salmon_version\": \"0.9.1\",\n    \"index\": \"/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-salmon/inputs/cluster/cidc/Reference/Human/hg38/Indecies/Salmon-0.9.1-genCodeV27-index\",\n    \"mates1\": \"/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-salmon/inputs/cluster/cidc/Immunotherapy/RNASeq/RCC_PD1_Miao/fastq/CA209009_11_14_1.fastq.gz\",\n    \"mates2\": \"/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-salmon/inputs/cluster/cidc/Immunotherapy/RNASeq/RCC_PD1_Miao/fastq/CA209009_11_14_2.fastq.gz\",\n    \"output\": \"out_quant\",\n    \"threads\": \"4\",\n    \"libType\": \"A\",\n    \"geneMap\": \"/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-salmon/inputs/cluster/cidc/Reference/Human/hg38/Genes/gencode.v27.annotation.gtf\",\n    \"auxDir\": \"aux_info\"\n}",
+    "RNA_Seq.star.chimeric_bam_file": "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-star/execution/star_out/CA209009_11_14.Chimeric.out.sam",
+    "RNA_Seq.trust.tcr_coverage": "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-trust/execution/CA209009_11_14.tcr_coverage.txt",
+    "RNA_Seq.fastqc1.data": "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-fastqc1/run_fastqc/a21c6f57-cadd-45f3-9152-ca98d5111ef8/call-fastqc/execution/CA209009_11_14_1.fastqc.data.txt",
+    "RNA_Seq.fastqc1.sequences": 48012590,
+    "RNA_Seq.salmon.quant": "/cluster/jwang/RNA-Seq/WDL/test_muptiple/cromwell-executions/RNA_Seq/0c37d1b9-d0fe-4e3c-ac61-0df3416badd5/call-salmon/execution/out_quant/quant.sf"
+  },
+  "id": "0c37d1b9-d0fe-4e3c-ac61-0df3416badd5"
+}
+[2018-08-02 19:48:48,15] [info] Message [cromwell.core.actor.StreamActorHelper$StreamFailed] without sender to Actor[akka://cromwell-system/deadLetters] was not delivered. [1] dead letters encountered. This logging can be turned off or adjusted with configuration settings 'akka.log-dead-letters' and 'akka.log-dead-letters-during-shutdown'.
+[2018-08-02 19:48:48,15] [info] Message [cromwell.core.actor.StreamActorHelper$StreamFailed] without sender to Actor[akka://cromwell-system/deadLetters] was not delivered. [2] dead letters encountered. This logging can be turned off or adjusted with configuration settings 'akka.log-dead-letters' and 'akka.log-dead-letters-during-shutdown'.
+[2018-08-02 19:48:48,15] [info] Message [cromwell.core.actor.StreamActorHelper$StreamFailed] without sender to Actor[akka://cromwell-system/deadLetters] was not delivered. [3] dead letters encountered. This logging can be turned off or adjusted with configuration settings 'akka.log-dead-letters' and 'akka.log-dead-letters-during-shutdown'.
+[2018-08-02 19:48:48,15] [[38;5;1merror[0m] Outgoing request stream error
+akka.stream.AbruptTerminationException: Processor actor [Actor[akka://cromwell-system/user/StreamSupervisor-1/flow-159-0-mergePreferred#-518438542]] terminated abruptly
+[2018-08-02 19:48:48,16] [[38;5;1merror[0m] Outgoing request stream error
+akka.stream.AbruptTerminationException: Processor actor [Actor[akka://cromwell-system/user/StreamSupervisor-1/flow-155-0-mergePreferred#300713918]] terminated abruptly
+[2018-08-02 19:48:48,18] [info] Automatic shutdown of the async connection
+[2018-08-02 19:48:48,18] [info] Gracefully shutdown sentry threads.
+[2018-08-02 19:48:48,18] [info] Shutdown finished.
