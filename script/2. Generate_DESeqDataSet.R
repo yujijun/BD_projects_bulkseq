@@ -9,6 +9,8 @@ library(DESeq2)
 library(tidyverse)
 ####load the count table and sample info####
 load("~/Documents/01-Work/06-BD_project/BD_projects/data/expr.count.rda")
+expr.count <- expr.count[,-19]
+expr.count <- expr.count[-grep("[.]",rownames(expr.count)),] #delete the gene with the name of "[.]"
 sample.info <- data.frame(sample = colnames(expr.count)) #generate sample info by sample information.
 sample.info <- sample.info %>% 
   mutate(patient =  str_remove(sample,pattern = '\\d+')) %>% 

@@ -22,3 +22,7 @@ data_upstream/*
 *.RData
 output/*
 *.Rhistory
+data_output/*
+output_BDV6/*
+output_explore/*
+*.zip

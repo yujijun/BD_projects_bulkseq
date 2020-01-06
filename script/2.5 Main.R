@@ -26,6 +26,22 @@ library("BiocParallel")
 register(MulticoreParam(4))
 options(stringsAsFactors = F)
 
+#parameter:
+contrast <- c("group","BD","HC")
+output <- "/Users/yujijun/Documents/01-Work/06-BD_project/BD_projects/output_BDV6"
+annocol <- c(rep("HC",10),rep("BD",8))
+annocol <- as.data.frame(annocol)
+rownames(annocol) <- colnames(expr.count)
+genelist <- c("C1QA","C1QB","C1QC","FCER1A","HLA-DPA1","HLA-DPB1","HLA-DQA1","HLA-DRB1")
+topnum <- 20
+bottomnum <- 20 
+genenum <- 20 
+prefix.main  <- "BDvsHC"
+height <- 20
+width <- 20
+clustercol  <- F
+clusterrow <- F
+intgroup <- c("group")
 #1. DEgene module####
 DEgene <- function(dds_tmp,contrast,output){
   #dds_tmp is the dds file after DESeq() generated from 1.Generate_DESeqDataSet.R 
@@ -45,10 +61,20 @@ DEgene <- function(dds_tmp,contrast,output){
   dev.off()
   return(res_dds_df)
 }
-#test DEgene function:
-# contrast <- c("group","BD","HC")
-# output <- "/Users/yujijun/Documents/01-Work/06-BD_project/BD_projects/output"
-# DEmatrix <- DEgene(dds_tmp,contrast,output)
+
+#output up and down regulator gene matrix in speific LFC and matrix.
+contrast <- c("group","BD","HC")
+DEmatrix <- DEgene(dds_tmp,contrast,output)
+DEmatrix.sign <- DEmatrix[DEmatrix$log2FoldChange >1 & DEmatrix$padj < 0.05,]
+DEmatrix.sign <- DEmatrix.sign[order(DEmatrix.sign$log2FoldChange,decreasing = T),]
+DEmatrix.sign <- DEmatrix.sign[complete.cases(DEmatrix.sign),]
+write.table(DEmatrix.sign,file = "./data-raw/DEmatrix.sign.txt",sep = "\t",row.names = T,col.names = T)
+#down-regulator gene set:
+DEmatrix.downsign <- DEmatrix[DEmatrix$log2FoldChange < -1 & DEmatrix$padj <0.05,]
+DEmatrix.downsign <- DEmatrix.downsign[complete.cases(DEmatrix.downsign),]
+DEmatrix.downsign <- DEmatrix.downsign[order(DEmatrix.downsign$log2FoldChange),]
+write.table(DEmatrix.downsign,file = "./data-raw/DEmatrix.downsign.txt",sep = "\t",row.names = T,col.names = T)
+
 
 ##2. Visulation for DEgene####
 #2.1 heatmap#
@@ -70,7 +96,8 @@ DEgene_heatmap <- function(dds_tmp,DEmatrix, topnum, bottomnum,annocol,clusterco
   DEmatrix <- DEmatrix[order(DEmatrix$padj),]
   DEmatrix <- DEmatrix[order(DEmatrix$log2FoldChange),]
   downgene <- rownames(DEmatrix[1:bottomnum,])
-  rld_BDUV <- rlog(dds_tmp, blind = FALSE)
+  rld_BDUV <- rlog(dds_tmp, blind = FALSE) #this transform is useful when checking for outliers 
+  #or as input for machine learning techniques such as clustering or linear discriminant analysis.
   mat  <- assay(rld_BDUV)[c(topgene,downgene), ]
   mat  <- mat - rowMeans(mat)
   upordown = c(rep("up",topnum),rep("down",bottomnum))
@@ -85,17 +112,32 @@ DEgene_heatmap <- function(dds_tmp,DEmatrix, topnum, bottomnum,annocol,clusterco
   dev.off()
 }
 #test heatmap function
-# annocol <- c(rep("HC",10),rep("BD",9))
-# annocol <- as.data.frame(annocol)
-# rownames(annocol) <- colnames(expr.count)
-# DEgene_heatmap(dds_tmp,DEmatrix,topnum = 20,bottomnum = 20,annocol = annocol,clustercol=F,clusterrow=F,output,prefix.main = "BDvsHC",height = 20,width = 20)
+annocol <- c(rep("HC",10),rep("BD",8))
+annocol <- as.data.frame(annocol)
+rownames(annocol) <- colnames(expr.count)
+DEgene_heatmap(dds_tmp,DEmatrix,topnum = 50,bottomnum = 50,annocol = annocol,clustercol=F,clusterrow=T,output,prefix.main = "BDvsHC",height = 40,width = 20)
 
 #Heatmap specific
-DEgene_heatmap_specific <- function(dds_tmp,genelist,prefix.main,output,height,width){
+Heatmap_specific <- function(dds_tmp,genelist,prefix.main,output,height,width){
+  require(pheatmap)
   main=paste0(prefix.main,"_heatmap_specific",sep = "")
   rld <- rlog(dds_tmp, blind = FALSE)
   mat  <- assay(rld)[genelist, ]
   mat  <- mat - rowMeans(mat)
+  p <- pheatmap(mat,cluster_cols = F,main = main,show_rownames = T)
+  figure.name <- paste(main,".png",sep = "")
+  outpath.DEgene <- paste(output,"DEgene",sep = "/")
+  ifelse(!dir.exists(outpath.DEgene),dir.create(outpath.DEgene),FALSE)
+  png(paste(outpath.DEgene,figure.name,sep = "/"), height = height, width=width, units="cm",res = 150)
+  print(p)
+  dev.off()
+}
+Heatmap_specific_median <- function(dds_tmp,genelist,prefix.main,output,height,width){
+  require(pheatmap)
+  main=paste0(prefix.main,"_heatmap_specific",sep = "")
+  rld <- rlog(dds_tmp, blind = FALSE)
+  mat  <- assay(rld)[genelist, ]
+  mat  <- mat - apply(mat, 1, median)
   p <- pheatmap(mat,cluster_cols = F,main = main)
   figure.name <- paste(main,".png",sep = "")
   outpath.DEgene <- paste(output,"DEgene",sep = "/")
@@ -104,10 +146,47 @@ DEgene_heatmap_specific <- function(dds_tmp,genelist,prefix.main,output,height,w
   print(p)
   dev.off()
 }
-#test Heatmap_specific:
-# gene <- c("C1QA","C1QB","C1QC","FCER1A","HLA-DPA1","HLA-DPB1","HLA-DQA1","HLA-DRB1")
-# Heatmap_specific(dds_tmp = dds_tmp, genelist = gene,prefix.main = "BDvsHC",output = output,height = 20,width = 20)
-#if we need to display heatmap by log2(TPM+1) and 
+
+#draw all up regulator gene list
+gene <- c(rownames(DEmatrix.sign))
+Heatmap_specific(dds_tmp = dds_tmp, genelist = gene,prefix.main = "BDvsHC",output = output,height = 300,width = 10)
+
+#draw the specific gene set in cluster.
+rld <- rlog(dds_tmp, blind = FALSE)
+mat  <- assay(rld)[genelist, ]
+mat  <- mat - rowMeans(mat)
+p <- pheatmap(mat,cluster_cols = F,main = main,show_rownames = F)
+geneset1 <- p$tree_row$labels[p$tree_row$order][1:19]
+Heatmap_specific(dds_tmp = dds_tmp, genelist = geneset1,prefix.main = "BDvsHC_geneset1",output = output,height = 10,width = 10)
+geneset2 <- p$tree_row$labels[p$tree_row$order][1256:length(p$tree_row$labels)]
+Heatmap_specific(dds_tmp = dds_tmp, genelist = geneset2,prefix.main = "BDvsHC_geneset2",output = output,height = 30,width = 10)
+
+#draw all down regulator gene list
+gene_down <- c(rownames(DEmatrix.downsign))
+Heatmap_specific(dds_tmp = dds_tmp, genelist = gene_down,prefix.main = "BDvsHC_down",output = output,height = 300,width = 10)
+#draw the specific gene set with cluster order:
+rld <- rlog(dds_tmp, blind = FALSE)
+mat  <- assay(rld)[gene_down, ]
+mat  <- mat - rowMeans(mat)
+p <- pheatmap(mat,cluster_cols = F,main = main,show_rownames = F)
+print(which(p$tree_row$labels[p$tree_row$order] == "SGCD"))
+geneset4<- p$tree_row$labels[p$tree_row$order][34:111]
+Heatmap_specific(dds_tmp = dds_tmp, genelist = geneset1,prefix.main = "BDvsHC_downgeneset3",output = output,height = 40,width = 10)
+
+
+##Prepare tpm expression
+main=paste0(prefix.main,"_heatmap_specific",sep = "")
+expr.tpm <- read.table("./data-raw/expr.tpm.company.expression.genename",header = T,sep = "\t")
+rownames(expr.tpm) <- expr.tpm[,1]
+expr.tpm <- expr.tpm[,-1]
+expr.tpm <- expr.tpm[rowSums(expr.tpm) >= 10,]
+expr.tpm <- expr.tpm[,-19]
+expr.tpm <- log2(expr.tpm+1)
+expr.tpm.tmp <- expr.tpm[gene,]
+expr.tpm.tmp <- expr.tpm.tmp - rowMeans(expr.tpm.tmp)
+#expr.tpm.tmp <- expr.tpm.tmp - apply(expr.tpm.tmp, 1, median)
+pheatmap(expr.tpm.tmp,cluster_cols = F,main = main)
+#if we need to display heatmap by log2(TPM+1) and
 
 #2.2 volcano plot
 volcanodisplaymultigene <- function(DEmatrix,genenum,prefix.main,output,height,width){
@@ -149,7 +228,7 @@ volcanodisplaymultigene <- function(DEmatrix,genenum,prefix.main,output,height,w
   }
 }
 ###3. Enrichment####
-Upenrichment_plot <- function(DEmatrix, LFC=0, Padj=0.05,prefix.main,height,width,output){
+Upenrichment_plot <- function(DEmatrix, LFC=1, Padj=0.05,prefix.main,height,width,output){
   main = paste(prefix.main,"_upgene_enrichment",sep = "")
   require(clusterProfiler)
   up.gene = DEmatrix %>% 
@@ -220,9 +299,16 @@ Downenrichment_plot <- function(DEmatrix, LFC=0, Padj=0.05,prefix.main,height,wi
   print(p2)
   dev.off()
 }
-#Test
-# Upenrichment_plot(DEmatrix,LFC=0,Padj = 0.05,prefix.main = "BDvsHC",height = 20,width = 20,output)
+#Tes
+Upenrichment_plot(DEmatrix,LFC=1,Padj = 0.05,prefix.main = "BDvsHC",height = 20,width = 20,output)
 # Downenrichment_plot(DEmatrix,LFC=0,Padj = 0.05,prefix.main = "BDvsHC",height = 20,width = 20,output)
+#specific gene enrichment
+eg = bitr(allgene, fromType="SYMBOL", toType="ENTREZID", OrgDb="org.Hs.eg.db")
+mkk <- enrichKEGG(gene = eg$ENTREZID,organism = 'hsa')
+
+#there is a question, for all gene together, I can't find the enrichment KEGG, So if there are some 
+#there are some other method I can do, The first thing I can do is that try another different 
+#method to do it again. (When there are too much noisy gene, It's not very unfavorable for enrichment analysis.)
 
 ####4. distance between samples####
 #4.1 Euclidean distance
@@ -253,8 +339,8 @@ poiss.dis.plot <- function(dds_tmp,prefix.main,height,width,output){
   poisd <- PoissonDistance(t(counts(dds_tmp)))
   sampleDists <- poisd$dd
   sampleDistMatrix <- as.matrix(sampleDists)
-  colnames(sampleDistMatrix) <- c(paste0("HC",seq(1,10)),paste0("BDU",seq(1,3)),paste0("BDV",seq(1,6)))
-  rownames(sampleDistMatrix) <- c(paste0("HC",seq(1,10)),paste0("BDU",seq(1,3)),paste0("BDV",seq(1,6)))
+  colnames(sampleDistMatrix) <- c(paste0("HC",seq(1,10)),paste0("BDU",seq(1,3)),paste0("BDV",seq(1,5)))
+  rownames(sampleDistMatrix) <- c(paste0("HC",seq(1,10)),paste0("BDU",seq(1,3)),paste0("BDV",seq(1,5)))
   colors <- colorRampPalette( rev(brewer.pal(9, "Blues")) )(255)
   p <- pheatmap(sampleDistMatrix,
            clustering_distance_rows = ,
@@ -292,53 +378,39 @@ PCA.plot <- function(dds_tmp,intgroup,height,width,prefix.main,output){
 }
 
 #test
-Eucli.dis.plot(dds_tmp,prefix.main = "BDvsHC",height = 20,width = 20,output)
-poiss.dis.plot(dds_tmp,prefix.main = "BDvsHC",height = 20,width = 20,output)
-PCA.plot(dds_tmp,intgroup = "group",prefix.main = "BDvsHC",height = 20,width = 20,output)
+# Eucli.dis.plot(dds_tmp,prefix.main = "BDvsHC",height = 20,width = 20,output)
+# poiss.dis.plot(dds_tmp,prefix.main = "BDvsHC",height = 20,width = 20,output)
+# PCA.plot(dds_tmp,intgroup = "group",prefix.main = "BDvsHC",height = 20,width = 20,output)
 
 #workflow####
-Workflow <- function(dds_tmp,contrast,topnum,bottomnum,genenum,annocol,output,specific.gene=T,genelist,prefix.main,height,width,clustercol,clusterrow,
-                     LFC=1,Padj=0.05,intgroup){
-  #DEgene
-  print("Calculating DEgene now......")
-  DEmatrix <- DEgene(dds_tmp,contrast = contrast, output)
-  print("Congratulation on you, DEgene was all done.")
-  #heatmap
-  print("Generating heatmap now......")
-  DEgene_heatmap(dds_tmp,DEmatrix,topnum,bottomnum,annocol = annocol,clustercol,clusterrow,output,main,height,width)
-  if(specific.gene == T){
-    DEgene_heatmap_specific(dds_tmp,genelist,prefix.main,output,height,width)
-  }
-  #volcanoplot
-  print("Generating volcano plot now......")
-  volcanodisplaymultigene(DEmatrix,genenum,prefix.main,output,height,width)
-  #Enrichment
-  print("Generating enrichment result now......")
-  Upenrichment_plot(DEmatrix,LFC = 1,Padj,prefix.main,height,width,output)
-  Downenrichment_plot(DEmatrix,LFC = 1,Padj,prefix.main,height,width,output)
-  #sample distance
-  print("Generating sample distance results now......")
-  Eucli.dis.plot(dds,prefix.main,height,width,output)
-  poiss.dis.plot(dds,prefix.main,height,width,output)
-  PCA.plot(dds,intgroup,height,width,prefix.main,output)
-}
+# Workflow <- function(dds_tmp,contrast,topnum,bottomnum,genenum,annocol,output,specific.gene=T,genelist,prefix.main,height,width,clustercol,clusterrow,
+#                      LFC=1,Padj=0.05,intgroup){
+#   #DEgene
+#   print("Calculating DEgene now......")
+#   DEmatrix <- DEgene(dds_tmp,contrast = contrast, output)
+#   print("Congratulation on you, DEgene was all done.")
+#   #heatmap
+#   print("Generating heatmap now......")
+#   DEgene_heatmap(dds_tmp,DEmatrix,topnum,bottomnum,annocol = annocol,clustercol,clusterrow,output,prefix.main,height,width)
+#   if(specific.gene == T){
+#     DEgene_heatmap_specific(dds_tmp,genelist,prefix.main,output,height,width)
+#   }
+#   #volcanoplot
+#   print("Generating volcano plot now......")
+#   volcanodisplaymultigene(DEmatrix,genenum,prefix.main,output,height,width)
+#   #Enrichment
+#   print("Generating enrichment result now......")
+#   #Upenrichment_plot(DEmatrix,LFC = 1,Padj,prefix.main,height,width,output)
+#   #Downenrichment_plot(DEmatrix,LFC = 1,Padj,prefix.main,height,width,output)
+#   #sample distance
+#   print("Generating sample distance results now......")
+#   Eucli.dis.plot(dds,prefix.main,height,width,output)
+#   poiss.dis.plot(dds,prefix.main,height,width,output)
+#   PCA.plot(dds,intgroup,height,width,prefix.main,output)
+# }
 
 #Running####
-contrast <- c("group","BD","HC")
-output <- "/Users/yujijun/Documents/01-Work/06-BD_project/BD_projects/output"
-annocol <- c(rep("HC",10),rep("BD",9))
-annocol <- as.data.frame(annocol)
-rownames(annocol) <- colnames(expr.count)
-genelist <- c("C1QA","C1QB","C1QC","FCER1A","HLA-DPA1","HLA-DPB1","HLA-DQA1","HLA-DRB1")
-topnum <- 20
-bottomnum <- 20 
-genenum <- 20 
-prefix.main  <- "BDvsHC"
-height <- 15
-width <- 15
-clustercol  <- F
-clusterrow <- F
-intgroup <- c("group")
+
 Workflow(dds_tmp,contrast,topnum,bottomnum,genenum,annocol,output,specific.gene=T,genelist,prefix.main,height,width,clustercol,clusterrow,
          LFC=1,Padj=0.05,intgroup)
 

@@ -16,12 +16,14 @@ library(stringr)
 library(tibble)
 library(ggplot2)
 library(corrplot)
+library(sva)
 ```
 # Some question about batch effect:
 ## Q1: could we just add batch forum into design to remove batch effect?  
 ## Ans1:
 (1) There's an important difference between removing a batch effect and modeling a batch effect.  
 (2) combat is remove batch effect,but DEseq2 is modeling batch effect.  
+
 (3) You would only remove the batch effect (e.g. using limma's removeBatchEffect function) if you were going to do some kind of downstream analysis that can't model the batch effects, such as training a classifier.  
 
 ## Q2: we should always put the condition of interest at the end of the design formula for safety.
@@ -102,6 +104,9 @@ plotPCA(vsd, "batch")
 assay(vsd) <- limma::removeBatchEffect(assay(vsd), vsd$batch)
 plotPCA(vsd, "patient")
 ```
+## by this method, we can't cancel noise.
+
+
 ## Q8: remove BDV6 and generate DE gene and enrichemnt 
 
 ## Q9: PathSeq:http://software.broadinstitute.org/pathseq/
@@ -150,3 +155,7 @@ corrplot(cor_df, p.mat=pvalue_df,insig = "label_sig",
          sig.level = c(.001,.01,.05),pch.cex = .9, pch.col = "white")
 
 ```
+
+Reference:
+https://www.bioconductor.org/packages/devel/workflows/vignettes/RNAseq123/inst/doc/limmaWorkflow.html
+
