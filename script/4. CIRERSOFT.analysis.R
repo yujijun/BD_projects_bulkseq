@@ -8,12 +8,13 @@
 #output:significant plot
 # 
 #CIBERSOFT analysis:
-ciber.data <- read.csv("./data_output/CIBERSOFT_output/CIBERSORT.Output_tpm.csv",header = T,row.names = 1)
+ciber.data <- read.csv("./data_upstream/CIBERSOFT_output/CIBERSORT.Output_tpm.csv",header = T,row.names = 1)
 ciber.data <- ciber.data[,-c(23,24,25)]
-ciber.data.filter <- ciber.data[,apply(ciber.data, MARGIN = 2,sum) > 0.1]
-ciber.data.filter$class <- c(rep("HC",10),rep("BD",9))
+#ciber.data.filter <- ciber.data[,apply(ciber.data, MARGIN = 2,sum) > 0.1]
+ciber.data.filter <- ciber.data[-19,]
+ciber.data.filter$class <- c(rep("HC",10),rep("BD",8))
 empty <- data.frame()
-samples <- colnames(ciber.data.filter[,-12])
+samples <- colnames(ciber.data.filter[,-23])
 for(i in seq(1,ncol(ciber.data.filter)-1)){
   value <- ciber.data.filter[,i]
   celltype <- rep(samples[i],nrow(ciber.data.filter))
@@ -34,4 +35,4 @@ p <- ggplot(empty, aes(x = class, y = value,fill=class)) +
   theme(axis.title.x = element_text(face = "bold")) + 
   theme(strip.text.x = element_text(face = "bold",size = 10))
 show(p)
-ggsave("./figure/TPM_Proprotion_immue.png",height = 8,width = 15)
+ggsave("./TPM_Proprotion_immune_absolute.png",height = 14,width = 15)

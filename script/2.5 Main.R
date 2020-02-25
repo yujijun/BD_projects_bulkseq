@@ -22,6 +22,7 @@ library(gplots)
 library(org.Hs.eg.db)
 library(RColorBrewer)
 library(statmod)
+require(clusterProfiler)
 library("BiocParallel")
 register(MulticoreParam(4))
 options(stringsAsFactors = F)
@@ -146,7 +147,54 @@ Heatmap_specific_median <- function(dds_tmp,genelist,prefix.main,output,height,w
   print(p)
   dev.off()
 }
+Heatmap_specific_scale <- function(dds_tmp,genelist,prefix.main,output,height,width){
+  require(pheatmap)
+  main=paste0(prefix.main,"_heatmap_specific",sep = "")
+  rld <- rlog(dds_tmp, blind = FALSE)
+  mat  <- assay(rld)[genelist, ]
+  mat <- t(scale(t(mat)))
+  #mat  <- mat - apply(mat, 1, median)
+  p <- pheatmap(mat,cluster_cols = F,main = main)
+  figure.name <- paste(main,".png",sep = "")
+  outpath.DEgene <- paste(output,"DEgene",sep = "/")
+  ifelse(!dir.exists(outpath.DEgene),dir.create(outpath.DEgene),FALSE)
+  png(paste(outpath.DEgene,figure.name,sep = "/"), height = height, width=width, units="cm",res = 150)
+  print(p)
+  dev.off()
+}
 
+upgene <- DEmatrix[DEmatrix$log2FoldChange>0.7 & DEmatrix$padj <0.05,]
+upgene <- upgene[complete.cases(upgene),]
+upgene <- rownames(upgene)
+rld <- rlog(dds_tmp, blind = FALSE)
+mat  <- assay(rld)[upgene, ]
+mat <- t(scale(t(mat)))
+#mat  <- mat - apply(mat, 1, median)
+p <- pheatmap(mat,cluster_cols = F,main = main)
+eg = bitr(upgene, fromType="SYMBOL", toType="ENTREZID", OrgDb="org.Hs.eg.db")
+mkk <- enrichKEGG(gene = eg$ENTREZID,organism = 'hsa')
+figure.name <- 'KEGG pathway in BDvsHC'
+p1 <- dotplot(mkk,title = figure.name)
+p1 + theme(plot.title = element_text(face = "bold",hjust = 0.5,size = 15)) 
+#
+i =5
+print(mkk$Description[i])
+UpgeneID <- str_split(mkk$geneID[i],"/")[[1]]
+complement <- bitr(UpgeneID, fromType="ENTREZID", toType="SYMBOL", OrgDb="org.Hs.eg.db")
+complement.gene <- as.character(complement$SYMBOL)
+write(complement.gene,"~/Desktop/complementary.txt",sep = "\t")
+rld <- rlog(dds_tmp, blind = FALSE)
+mat  <- assay(rld)[complement.gene, ]
+mat <- t(scale(t(mat)))
+#mat  <- mat - apply(mat, 1, median)
+annocol <- c(rep("HC",10),rep("BD",8))
+annocol <- as.data.frame(annocol)
+rownames(annocol) <- colnames(expr.count)
+p <- pheatmap(mat,cluster_cols = F,main = main,annotation_col = annocol)
+write(complement.gene,file="~/Desktop/complement.txt",sep = "\t")
+
+
+p <- pheatmap(mat,cluster_cols = F,main = main)
 #draw all up regulator gene list
 gene <- c(rownames(DEmatrix.sign))
 Heatmap_specific(dds_tmp = dds_tmp, genelist = gene,prefix.main = "BDvsHC",output = output,height = 300,width = 10)
@@ -155,7 +203,9 @@ Heatmap_specific(dds_tmp = dds_tmp, genelist = gene,prefix.main = "BDvsHC",outpu
 rld <- rlog(dds_tmp, blind = FALSE)
 mat  <- assay(rld)[genelist, ]
 mat  <- mat - rowMeans(mat)
-p <- pheatmap(mat,cluster_cols = F,main = main,show_rownames = F)
+mat <- mat[geneset1,]
+mat <- t(scale(t(mat)))
+p <- pheatmap(mat,cluster_cols = F,,main = main,show_rownames = T)
 geneset1 <- p$tree_row$labels[p$tree_row$order][1:19]
 Heatmap_specific(dds_tmp = dds_tmp, genelist = geneset1,prefix.main = "BDvsHC_geneset1",output = output,height = 10,width = 10)
 geneset2 <- p$tree_row$labels[p$tree_row$order][1256:length(p$tree_row$labels)]
@@ -256,10 +306,10 @@ Upenrichment_plot <- function(DEmatrix, LFC=1, Padj=0.05,prefix.main,height,widt
   sink()
   
   #print enrichment figure
-  figure.name <- paste('Upregulated KEGG pathway in ',main," (",LFC,",",Padj,")",sep = "")
+  figure.name <- 'KEGG pathway in BDvsHC'
   p1 <- dotplot(mkk,title = figure.name)
-  p1 + theme(plot.title = element_text(face = "bold",hjust = 0.5,size = 15)) +
-    labs(subtitle=paste("The number of Upgene is:",length(up.gene),sep = " "))
+  p1 + theme(plot.title = element_text(face = "bold",hjust = 0.5,size = 15)) 
+    #labs(subtitle=paste("The number of Upgene is:",length(up.gene),sep = " "))
   figure.output <- paste(main,".png",sep = "")
   png(paste(outpath.Enrichment,figure.output,sep = "/"),height = height,width=width,units="cm",res = 150)
   print(p1)
@@ -303,8 +353,12 @@ Downenrichment_plot <- function(DEmatrix, LFC=0, Padj=0.05,prefix.main,height,wi
 Upenrichment_plot(DEmatrix,LFC=1,Padj = 0.05,prefix.main = "BDvsHC",height = 20,width = 20,output)
 # Downenrichment_plot(DEmatrix,LFC=0,Padj = 0.05,prefix.main = "BDvsHC",height = 20,width = 20,output)
 #specific gene enrichment
-eg = bitr(allgene, fromType="SYMBOL", toType="ENTREZID", OrgDb="org.Hs.eg.db")
+allgene <- rownames(DEmatrix[DEmatrix$padj < 0.05 & DEmatrix$log2FoldChange>0,])
+eg = bitr(geneset1, fromType="SYMBOL", toType="ENTREZID", OrgDb="org.Hs.eg.db")
 mkk <- enrichKEGG(gene = eg$ENTREZID,organism = 'hsa')
+figure.name <- 'KEGG pathway in BDvsHC'
+p1 <- dotplot(mkk,title = figure.name)
+p1 + theme(plot.title = element_text(face = "bold",hjust = 0.5,size = 15)) 
 
 #there is a question, for all gene together, I can't find the enrichment KEGG, So if there are some 
 #there are some other method I can do, The first thing I can do is that try another different 
